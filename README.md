@@ -1,7 +1,16 @@
 # Boutique Manager
 
-A **local** shop-management web app: products (with photos), stock, sales with
-discounts, expenses, dashboard and exports. Replaces the legacy Excel spreadsheet.
+A shop-management web app: products (with photos), stock, sales with discounts,
+expenses, dashboard and exports — **protected by a sign-in** and **bilingual FR / EN**.
+It replaces the legacy Excel spreadsheet and runs either **locally** (double-click
+`run.bat`, zero setup) or **online** (free hosting on PythonAnywhere, photos served
+from the ImageKit CDN).
+
+## 📝 License
+
+This is just a fun little project built to help out a friend. **No licensing, no
+restrictions** — anyone is free to use it, modify it, or do whatever they like with
+it. 😄
 
 ## 🚀 Quick start (end user)
 

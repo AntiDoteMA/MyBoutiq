@@ -1,7 +1,16 @@
 # Boutique Manager
 
-Application web **locale** de gestion de boutique : produits (avec photos), stock,
-ventes avec remises, dépenses, tableau de bord et exports. Remplace l'ancien tableau Excel.
+Application web de gestion de boutique : produits (avec photos), stock, ventes avec
+remises, dépenses, tableau de bord et exports — **sécurisée par une connexion** et
+**bilingue FR / EN**. Elle remplace l'ancien tableau Excel et fonctionne en **local**
+(double-clic sur `run.bat`, aucune configuration) ou **en ligne** (hébergement gratuit
+sur PythonAnywhere, photos servies depuis le CDN ImageKit).
+
+## 📝 Licence
+
+C'est juste un petit projet sympa fait pour dépanner un ami. **Aucune licence, aucune
+restriction** — chacun est libre de l'utiliser, de le modifier ou d'en faire ce qu'il
+veut. 😄
 
 ## 🚀 Démarrage (utilisateur)
 
