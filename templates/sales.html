@@ -58,6 +58,7 @@
             <span class="badge text-bg-secondary">{{ _('sales.refunded') }}</span>
           {% else %}
             <form method="post" action="{{ url_for('sale_void', sid=s.id) }}" class="d-inline" data-confirm="{{ _('sales.confirm_void') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button class="btn btn-sm btn-outline-danger">{{ _('sales.void') }}</button>
             </form>
           {% endif %}

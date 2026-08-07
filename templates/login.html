@@ -9,6 +9,7 @@
       <div class="card-header fw-semibold">{{ _('login.title') }}</div>
       <div class="card-body">
         <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-3">
             <label class="form-label">{{ _('login.username') }}</label>
             <input type="text" name="username" class="form-control" required>

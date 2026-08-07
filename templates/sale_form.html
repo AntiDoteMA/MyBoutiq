@@ -7,6 +7,7 @@
       <div class="card-header fw-semibold">{{ _('sale_form.title') }}</div>
       <div class="card-body">
         <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-3">
             <label class="form-label">{{ _('sale_form.product') }}</label>
             <select name="product_id" id="saleProduct" class="form-select" required>

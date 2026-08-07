@@ -45,6 +45,7 @@ STRINGS = {
         "nav.expenses": "Dépenses",
         "nav.export": "Exporter",
         "nav.logout": "Déconnexion",
+        "nav.account": "Compte",
 
         # ---- Shared actions ----
         "action.filter": "Filtrer",
@@ -190,6 +191,7 @@ STRINGS = {
         "error.generic": "Une erreur est survenue.",
         "error.oops": "Oups !",
         "error.back": "Retour au tableau de bord",
+        "error.csrf": "Session expirée, veuillez réessayer.",
 
         # Login
         "login.title": "Connexion",
@@ -197,6 +199,13 @@ STRINGS = {
         "login.password": "Mot de passe",
         "login.submit": "Se connecter",
         "login.cancel": "Annuler",
+
+        # Change password
+        "password.title": "Modifier le mot de passe",
+        "password.current": "Mot de passe actuel",
+        "password.new": "Nouveau mot de passe",
+        "password.confirm": "Confirmer le nouveau mot de passe",
+        "password.hint": "Au moins 8 caractères.",
 
         # Flash messages (Python-side, translated at flash time)
         "flash.product_added": "Produit ajouté.",
@@ -219,6 +228,10 @@ STRINGS = {
         "flash.login_success": "Connexion réussie.",
         "flash.login_failed": "Nom d'utilisateur ou mot de passe incorrect.",
         "flash.logout_success": "Vous êtes déconnecté.",
+        "flash.password_changed": "Mot de passe modifié.",
+        "flash.password_wrong": "Mot de passe actuel incorrect.",
+        "flash.password_mismatch": "Les mots de passe ne correspondent pas.",
+        "flash.password_short": "Le mot de passe doit contenir au moins 8 caractères.",
 
         # Validation returns (product form)
         "err.name_required": "Le nom du produit est obligatoire.",
@@ -238,6 +251,7 @@ STRINGS = {
         "nav.expenses": "Expenses",
         "nav.export": "Export",
         "nav.logout": "Log out",
+        "nav.account": "Account",
 
         # ---- Shared actions ----
         "action.filter": "Filter",
@@ -383,6 +397,7 @@ STRINGS = {
         "error.generic": "An error occurred.",
         "error.oops": "Oops!",
         "error.back": "Back to dashboard",
+        "error.csrf": "Session expired, please try again.",
 
         # Login
         "login.title": "Sign in",
@@ -390,6 +405,13 @@ STRINGS = {
         "login.password": "Password",
         "login.submit": "Sign in",
         "login.cancel": "Cancel",
+
+        # Change password
+        "password.title": "Change password",
+        "password.current": "Current password",
+        "password.new": "New password",
+        "password.confirm": "Confirm new password",
+        "password.hint": "At least 8 characters.",
 
         # Flash messages (Python-side)
         "flash.product_added": "Product added.",
@@ -412,6 +434,10 @@ STRINGS = {
         "flash.login_success": "Signed in successfully.",
         "flash.login_failed": "Invalid username or password.",
         "flash.logout_success": "You have been signed out.",
+        "flash.password_changed": "Password updated.",
+        "flash.password_wrong": "Current password is incorrect.",
+        "flash.password_mismatch": "Passwords do not match.",
+        "flash.password_short": "Password must be at least 8 characters.",
 
         # Validation returns (product form)
         "err.name_required": "The product name is required.",

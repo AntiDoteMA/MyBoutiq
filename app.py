@@ -42,6 +42,11 @@ from sqlalchemy.engine import Engine
 
 from models import db, Product, Sale, StockTransaction, Expense, User
 from i18n import t, normalize, DEFAULT_LANG
+from flask_wtf import CSRFProtect
+from flask_wtf.csrf import CSRFError
+from urllib.parse import urlsplit
+
+csrf = CSRFProtect()
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -51,6 +56,21 @@ DB_PATH = os.environ.get("BOUTIQUE_DB") or os.path.join(DATA_DIR, "shop.db")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
+def _safe_next_url(target, default):
+    """Only allow same-app relative redirect targets (blocks open redirects).
+
+    Rejects absolute URLs, protocol-relative URLs (//host) and backslash tricks.
+    """
+    if not target:
+        return default
+    if target.startswith(("//", "\\\\")):
+        return default
+    ref = urlsplit(target)
+    if ref.scheme or ref.netloc:
+        return default
+    return target
+
+
 # ---------------------------------------------------------------------------
 # App factory
 # ---------------------------------------------------------------------------
@@ -58,10 +78,11 @@ os.makedirs(DATA_DIR, exist_ok=True)
 def create_app():
     app = Flask(__name__)
     app.config.update(
-        SECRET_KEY="boutique-manager-local-key",
+        SECRET_KEY=os.getenv("SECRET_KEY") or "boutique-manager-local-key",
         SQLALCHEMY_DATABASE_URI="sqlite:///" + DB_PATH.replace("\\", "/"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         MAX_CONTENT_LENGTH=6 * 1024 * 1024,  # just above the 5 MB image cap
+        WTF_CSRF_TIME_LIMIT=3600,
     )
 
     @event.listens_for(Engine, "connect")
@@ -72,6 +93,7 @@ def create_app():
         cursor.close()
 
     db.init_app(app)
+    csrf.init_app(app)
 
     # Initialise ImageKit SDK (used for direct upload to CDN)
     # The modern ImageKit SDK exposes the `ImageKit` class directly.
@@ -438,19 +460,40 @@ def register_routes(app):
             if user and user.check_password(password):
                 session["user_id"] = user.id
                 flash(_t("flash.login_success"), "success")
-                # Redirect to original target if present
-                next_url = request.args.get("next") or url_for("dashboard")
+                # Redirect to original target if present (safe-only: no open redirect)
+                next_url = _safe_next_url(request.args.get("next"), url_for("dashboard"))
                 return redirect(next_url)
             else:
                 flash(_t("flash.login_failed"), "danger")
         # GET request – render login form
         return render_template("login.html")
 
-    @app.route("/logout")
+    @app.route("/logout", methods=["POST"])
     def logout():
         session.clear()
         flash(_t("flash.logout_success"), "success")
         return redirect(url_for("login"))
+
+    @app.route("/account/password", methods=["GET", "POST"])
+    def change_password():
+        """Let the authenticated user change their password."""
+        user = db.session.get(User, session.get("user_id"))
+        if request.method == "POST":
+            current_pw = request.form.get("current_password", "")
+            new_pw = request.form.get("new_password", "")
+            confirm_pw = request.form.get("confirm_password", "")
+            if user is None or not user.check_password(current_pw):
+                flash(_t("flash.password_wrong"), "danger")
+            elif new_pw != confirm_pw:
+                flash(_t("flash.password_mismatch"), "danger")
+            elif len(new_pw) < 8:
+                flash(_t("flash.password_short"), "danger")
+            else:
+                user.set_password(new_pw)
+                db.session.commit()
+                flash(_t("flash.password_changed"), "success")
+                return redirect(url_for("dashboard"))
+        return render_template("password.html")
 
     # --------------------------- Sales -------------------------------
 
@@ -763,6 +806,10 @@ def register_error_handlers(app):
     def too_large(error):
         return render_template("error.html", message=_t("error.413")), 413
 
+    @app.errorhandler(CSRFError)
+    def csrf_error(error):
+        return render_template("error.html", message=_t("error.csrf")), 400
+
     @app.errorhandler(Exception)
     def generic(error):
         app.logger.exception("Unhandled error")
@@ -792,6 +839,6 @@ def main():
 if __name__ == "__main__":
     print("Starting Boutique Manager...")
     from werkzeug.security import generate_password_hash
-    x_password_hash = generate_password_hash("admin")
-    print(f"generate_password_hash: {x_password_hash}")
+    #x_password_hash = generate_password_hash("admin")
+    #print(f"generate_password_hash: {x_password_hash}")
     main()

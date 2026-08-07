@@ -8,6 +8,7 @@
       <div class="card-body">
         <p class="text-muted">{{ _('expense_form.hint') }}</p>
         <form method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-3">
             <label class="form-label">{{ _('expense_form.date') }}</label>
             <input type="date" name="date" class="form-control" value="{{ request.form.get('date', today) }}">

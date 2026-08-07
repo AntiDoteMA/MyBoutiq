@@ -14,6 +14,7 @@
         {% set lv = request.form.get('low_stock_threshold', product.low_stock_threshold if product else 1) %}
 
         <form method="post" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-3">
             <label class="form-label">{{ _('product_form.name') }}</label>
             <input type="text" name="name" class="form-control" value="{{ pv }}" required>

@@ -10,6 +10,7 @@ Run:  python tests_acceptance.py
 import base64
 import io
 import os
+import re
 import sys
 import tempfile
 
@@ -31,6 +32,13 @@ FAIL = []
 def check(label, condition):
     (PASS if condition else FAIL).append(label)
     print(("  OK  " if condition else "ERREUR ") + label)
+
+
+def csrf(client):
+    """Current CSRF token as rendered in the login form (Flask-WTF signs it)."""
+    body = client.get("/login").get_data(as_text=True)
+    m = re.search(r'name="csrf_token" value="([^"]+)"', body)
+    return m.group(1) if m else ""
 
 
 # A real 1x1 PNG (smallest valid) for the upload test.
@@ -55,7 +63,10 @@ def main():
             db.session.add(admin)
         admin.set_password("admin123")
         db.session.commit()
-    r = client.post("/login", data={"username": "admin", "password": "admin123"},
+    client.get("/login")  # establish the session (and its CSRF token)
+    r = client.post("/login",
+                    data={"username": "admin", "password": "admin123",
+                          "csrf_token": csrf(client)},
                     follow_redirects=True)
     check("Connexion de test reussie", r.status_code == 200)
 
@@ -86,6 +97,7 @@ def main():
             "low_stock_threshold": "1",
             "initial_stock": "10",
             "image": (io.BytesIO(PNG_1PX), "photo.png"),
+            "csrf_token": csrf(client),
         },
         content_type="multipart/form-data",
         follow_redirects=True,
@@ -106,7 +118,8 @@ def main():
         pid = Product.query.filter_by(name="Test A").first().id
     client.post(
         "/sales/new",
-        data={"product_id": str(pid), "quantity": "2", "charged_price": "6.00"},
+        data={"product_id": str(pid), "quantity": "2", "charged_price": "6.00",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     with app.app_context():
@@ -121,7 +134,8 @@ def main():
     print("\n== 4. Vente remisee : liste 6,00 facture 5,00 x2 ==")
     client.post(
         "/sales/new",
-        data={"product_id": str(pid), "quantity": "2", "charged_price": "5.00"},
+        data={"product_id": str(pid), "quantity": "2", "charged_price": "5.00",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     with app.app_context():
@@ -140,7 +154,8 @@ def main():
     print("\n== 5. Vente > stock bloquee ==")
     r = client.post(
         "/sales/new",
-        data={"product_id": str(pid), "quantity": "99", "charged_price": "5.00"},
+        data={"product_id": str(pid), "quantity": "99", "charged_price": "5.00",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     body = r.get_data(as_text=True)
@@ -154,13 +169,15 @@ def main():
     print("\n== 6. Remise negative / au-dessus du prix liste ==")
     r = client.post(
         "/sales/new",
-        data={"product_id": str(pid), "quantity": "1", "charged_price": "7.00"},
+        data={"product_id": str(pid), "quantity": "1", "charged_price": "7.00",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     check("Prix facture > prix liste refuse", "ne peut pas dépasser" in r.get_data(as_text=True))
     r = client.post(
         "/sales/new",
-        data={"product_id": str(pid), "quantity": "1", "charged_price": "-1"},
+        data={"product_id": str(pid), "quantity": "1", "charged_price": "-1",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     check("Prix facture < 0 refuse", "Prix facturé invalide" in r.get_data(as_text=True))
@@ -168,7 +185,8 @@ def main():
     print("\n== 7. Remboursement (void) ==")
     with app.app_context():
         first_sale = Sale.query.order_by(Sale.id).first()
-    client.post(f"/sales/{first_sale.id}/void", follow_redirects=True)
+    client.post(f"/sales/{first_sale.id}/void",
+                data={"csrf_token": csrf(client)}, follow_redirects=True)
     with app.app_context():
         p = Product.query.filter_by(name="Test A").first()
         first_sale = db.session.get(Sale, first_sale.id)
@@ -182,13 +200,15 @@ def main():
     client.post(
         "/products/new",
         data={"name": "Test B", "purchase_price": "1.00", "sale_price": "2.00",
-              "low_stock_threshold": "1", "initial_stock": "1"},
+              "low_stock_threshold": "1", "initial_stock": "1",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     client.post(
         "/products/new",
         data={"name": "Test C", "purchase_price": "1.00", "sale_price": "2.00",
-              "low_stock_threshold": "1", "initial_stock": "0"},
+              "low_stock_threshold": "1", "initial_stock": "0",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     with app.app_context():
@@ -204,7 +224,8 @@ def main():
     print("\n== 9. Depenses (frais) ==")
     r = client.post(
         "/expenses/new",
-        data={"date": "2026-08-07", "description": "Livraison test", "amount": "10.50"},
+        data={"date": "2026-08-07", "description": "Livraison test", "amount": "10.50",
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     check("Depense creee", "Livraison test" in r.get_data(as_text=True))
@@ -222,7 +243,8 @@ def main():
     print("\n== 10. Suppression douce ==")
     with app.app_context():
         cid = Product.query.filter_by(name="Test C").first().id
-    client.post(f"/products/{cid}/delete", follow_redirects=True)
+    client.post(f"/products/{cid}/delete",
+                data={"csrf_token": csrf(client)}, follow_redirects=True)
     r = client.get("/products")
     check("Produit masque de la liste active", "Test C" not in r.get_data(as_text=True))
     body = client.get("/sales/new").get_data(as_text=True)
@@ -255,7 +277,9 @@ def main():
     print("\n== 13. Persistance (redemarrage) ==")
     app2 = new_app()
     c2 = app2.test_client()
-    c2.post("/login", data={"username": "admin", "password": "admin123"},
+    c2.get("/login")  # establish c2's session + CSRF token
+    c2.post("/login", data={"username": "admin", "password": "admin123",
+                            "csrf_token": csrf(c2)},
             follow_redirects=True)
     with app2.app_context():
         check("Produits toujours presents", Product.query.filter_by(name="Test A").count() == 1)
@@ -297,7 +321,8 @@ def main():
     client.post(
         "/products/new",
         data={"name": "Test Desc", "purchase_price": "1.00", "sale_price": "2.00",
-              "initial_stock": "2", "description": styled},
+              "initial_stock": "2", "description": styled,
+              "csrf_token": csrf(client)},
         follow_redirects=True,
     )
     with app.app_context():
@@ -312,6 +337,46 @@ def main():
     eb = r.get_data(as_text=True)
     check("Formulaire pre-rempli avec la description", "Lotus" in eb)
     check("Bouton copier present", "Copier" in eb)
+
+    print("\n== 18. Securite : CSRF + mot de passe ==")
+    # POST without CSRF token must be rejected
+    r = client.post("/products/new",
+                    data={"name": "NoCsrf", "purchase_price": "1", "sale_price": "2"},
+                    follow_redirects=True)
+    check("POST sans jeton CSRF rejete (400)", r.status_code == 400)
+
+    # Open-redirect guard on the login "next" helper
+    from app import _safe_next_url
+    check("next= externe bloque", _safe_next_url("https://evil.com", "/") == "/")
+    check("next= protocole relatif bloque", _safe_next_url("//evil.com", "/") == "/")
+    check("next= relatif autorise", _safe_next_url("/products", "/") == "/products")
+
+    # Change password page
+    check("GET /account/password -> 200",
+          client.get("/account/password").status_code == 200)
+    r = client.post("/account/password",
+                    data={"current_password": "wrong", "new_password": "newpass123",
+                          "confirm_password": "newpass123",
+                          "csrf_token": csrf(client)}, follow_redirects=True)
+    check("Mauvais mot de passe actuel rejete", "Mot de passe actuel" in r.get_data(as_text=True))
+    r = client.post("/account/password",
+                    data={"current_password": "admin123", "new_password": "newpass123",
+                          "confirm_password": "different123",
+                          "csrf_token": csrf(client)}, follow_redirects=True)
+    check("Confirmation differente rejetee", "ne correspondent pas" in r.get_data(as_text=True))
+    r = client.post("/account/password",
+                    data={"current_password": "admin123", "new_password": "newpass123",
+                          "confirm_password": "newpass123",
+                          "csrf_token": csrf(client)}, follow_redirects=True)
+    check("Mot de passe change avec succes", r.status_code == 200)
+
+    # Log out, then log back in with the new password
+    client.post("/logout", data={"csrf_token": csrf(client)}, follow_redirects=True)
+    client.get("/login")
+    r = client.post("/login",
+                    data={"username": "admin", "password": "newpass123",
+                          "csrf_token": csrf(client)}, follow_redirects=True)
+    check("Connexion avec Nouveau mot de passe", r.status_code == 200)
 
     # Cleanup temp files.
     try:

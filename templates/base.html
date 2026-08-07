@@ -24,7 +24,11 @@
         </ul>
         <div class="d-flex align-items-center ms-auto gap-2">
           {% if logged_in %}
-          <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">{{ _('nav.logout') }}</a>
+          <a href="{{ url_for('change_password') }}" class="btn btn-sm btn-outline-light">{{ _('nav.account') }}</a>
+          <form method="post" action="{{ url_for('logout') }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-light">{{ _('nav.logout') }}</button>
+          </form>
           {% endif %}
           <a href="{{ url_for('set_lang', code='fr') }}" class="btn btn-sm {{ 'btn-light' if lang == 'fr' else 'btn-outline-light' }}">FR</a>
           <a href="{{ url_for('set_lang', code='en') }}" class="btn btn-sm {{ 'btn-light' if lang == 'en' else 'btn-outline-light' }}">EN</a>
