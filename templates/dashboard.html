@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}{{ _('dashboard.title') }} – Boutique Manager{% endblock %}
+{% block content %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">{{ _('dashboard.title') }}</h2>
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="{{ url_for('product_new') }}" class="btn btn-primary">{{ _('action.add_product') }}</a>
+    <a href="{{ url_for('sale_new') }}" class="btn btn-success">{{ _('action.new_sale') }}</a>
+    <a href="{{ url_for('expense_new') }}" class="btn btn-warning">{{ _('action.new_expense') }}</a>
+  </div>
+</div>
+
+<!-- KPI cards -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.total_sales') }}</div>
+    <div class="kpi-value">{{ totals.total_sales|eur }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.profit') }}</div>
+    <div class="kpi-value text-success">{{ totals.total_profit|eur }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.total_expenses') }}</div>
+    <div class="kpi-value text-danger">{{ totals.total_expenses|eur }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.operating') }}</div>
+    <div class="kpi-value text-warning">{{ totals.operating|eur }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.units_stock') }}</div>
+    <div class="kpi-value">{{ totals.units_stock }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.units_sold') }}</div>
+    <div class="kpi-value">{{ totals.units_sold }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.total_discounts') }}</div>
+    <div class="kpi-value">{{ totals.total_discounts|eur }}</div>
+  </div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
+    <div class="kpi-label">{{ _('kpi.margin') }}</div>
+    <div class="kpi-value">{{ ((totals.total_profit / totals.units_sold) if totals.units_sold else 0.0) | eur }}</div>
+  </div></div></div>
+</div>
+
+<!-- Charts -->
+<div class="row g-3 mb-4">
+  <div class="col-lg-8"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.line_title') }}</div>
+    <div class="card-body"><canvas id="chartLine" height="120"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.doughnut_title') }}</div>
+    <div class="card-body"><canvas id="chartDoughnut" height="190"></canvas></div></div></div>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-lg-7"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.bar_title') }}</div>
+    <div class="card-body"><canvas id="chartBar" height="140"></canvas></div></div></div>
+  <div class="col-lg-5"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.top_title') }}</div>
+    <div class="card-body"><canvas id="chartTop" height="140"></canvas></div></div></div>
+</div>
+
+<!-- Alerts -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header">{{ _('alerts.title') }}</div>
+  <div class="card-body">
+    {% if alerts %}
+      <ul class="list-group">
+        {% for p in alerts %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('products', q=p.name) }}">{{ p.name }}</a>
+            <span class="badge status-{{ p.status }}">{{ p.stock }} {{ _('in.stock') }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted mb-0">{{ _('alerts.none') }}</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+<script>
+const charts = {{ charts|tojson }};
+window.addEventListener('DOMContentLoaded', function () {
+  Chart.defaults.color = '#555';
+  new Chart(document.getElementById('chartLine'), {
+    type: 'line',
+    data: { labels: charts.line.labels, datasets: [{
+      label: '{{ _('chart.sales') }}', data: charts.line.values, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,.1)', fill: true, tension: .3
+    }]},
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+  new Chart(document.getElementById('chartBar'), {
+    type: 'bar',
+    data: { labels: charts.bar.labels, datasets: [
+      { label: '{{ _('chart.revenue') }}', data: charts.bar.revenue, backgroundColor: '#0d6efd' },
+      { label: '{{ _('chart.expenses') }}', data: charts.bar.expenses, backgroundColor: '#dc3545' },
+      { label: '{{ _('chart.profit') }}', data: charts.bar.profit, backgroundColor: '#198754' }
+    ]},
+    options: { scales: { y: { beginAtZero: true } } }
+  });
+  new Chart(document.getElementById('chartTop'), {
+    type: 'bar',
+    data: { labels: charts.top.labels, datasets: [{ label: '{{ _('chart.qty_sold') }}', data: charts.top.values, backgroundColor: '#6f42c1' }]},
+    options: { indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+  });
+  new Chart(document.getElementById('chartDoughnut'), {
+    type: 'doughnut',
+    data: { labels: charts.doughnut.labels, datasets: [{ data: charts.doughnut.values, backgroundColor: ['#198754', '#ffc107', '#dc3545'] }]}
+  });
+});
+</script>
+{% endblock %}

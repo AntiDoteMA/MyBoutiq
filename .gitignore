@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Runtime data (SQLite + uploaded product images)
+data/
+static/uploads/*
+
+# OS
+Thumbs.db
+.DS_Store

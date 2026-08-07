@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ _('export.title') }} · Boutique Manager{% endblock %}
+{% block content %}
+<h2 class="mb-3">{{ _('export.title') }}</h2>
+<p class="text-muted">{{ _('export.intro') }}</p>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h5 class="card-title">{{ _('export.xlsx') }}</h5>
+      <p class="card-text">{{ _('export.xlsx_desc') }}</p>
+      <a href="{{ url_for('export_xlsx') }}" class="btn btn-primary">{{ _('export.download_xlsx') }}</a>
+    </div></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h5 class="card-title">{{ _('export.csv') }}</h5>
+      <p class="card-text">{{ _('export.csv_desc') }}</p>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ url_for('export_csv_feuille1') }}" class="btn btn-outline-primary">{{ _('export.csv_fe11') }}</a>
+        <a href="{{ url_for('export_csv_ventes') }}" class="btn btn-outline-success">{{ _('export.csv_sales') }}</a>
+        <a href="{{ url_for('export_csv_depenses') }}" class="btn btn-outline-warning">{{ _('export.csv_expenses') }}</a>
+      </div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+flask>=3.0
+flask-sqlalchemy>=3.1
+pandas>=2.0
+openpyxl>=3.1
+# Use a stable ImageKit SDK version (>=1.1,<2.0) as 1.0.x series is not published.
+imagekitio>=5.5.0
+requests>=2.0
+python-dotenv>=0.21

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('login.title') }} – Boutique Manager{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <div class="card shadow-sm mt-5">
+      <div class="card-header fw-semibold">{{ _('login.title') }}</div>
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label">{{ _('login.username') }}</label>
+            <input type="text" name="username" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('login.password') }}</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn btn-primary">{{ _('login.submit') }}</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-link">{{ _('login.cancel') }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
