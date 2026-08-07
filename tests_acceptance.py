@@ -1,5 +1,5 @@
 """
-Boutique Manager - acceptance tests (PRD section 12).
+MyBoutiq - acceptance tests (PRD section 12).
 
 Runs against a throwaway SQLite DB (BOUTIQUE_DB) using Flask's test client.
 Every acceptance criterion is exercised; failures print and exit non-zero.

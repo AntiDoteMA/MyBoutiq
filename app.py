@@ -1,5 +1,5 @@
 """
-Boutique Manager - Flask application.
+MyBoutiq - Flask application.
 
 Server-rendered, French UI, single-user local app.
 - Binds 127.0.0.1 only, SQLite (WAL), offline vendored assets.
@@ -837,7 +837,7 @@ def main():
 
 
 if __name__ == "__main__":
-    print("Starting Boutique Manager...")
+    print("Starting MyBoutiq...")
     from werkzeug.security import generate_password_hash
     #x_password_hash = generate_password_hash("admin")
     #print(f"generate_password_hash: {x_password_hash}")

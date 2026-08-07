@@ -1,4 +1,4 @@
-# Boutique Manager
+# MyBoutiq
 
 A shop-management web app: products (with photos), stock, sales with discounts,
 expenses, dashboard and exports — **protected by a sign-in** and **bilingual FR / EN**.
@@ -123,8 +123,8 @@ password on first sign-in. Each PythonAnywhere account has its own `data/shop.db
 ## Structure
 
 ```
-Bilal/
-  PRD.md, PRD-v2.md, README.md, EN_README.md, requirements.txt
+MyBoutiq/
+  README.md, requirements.txt
   app.py, models.py, i18n.py, seed.py, export.py, backfill_dates.py, run.bat
   tests_acceptance.py
   data/            # shop.db (created on first run)

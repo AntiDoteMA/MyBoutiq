@@ -1,5 +1,5 @@
 """
-Boutique Manager - lightweight internationalization.
+MyBoutiq - lightweight internationalization.
 
 No external dependency: strings live in two plain dictionaries (fr / en).
 French is the default UI language (PRD section 6). To add another language,

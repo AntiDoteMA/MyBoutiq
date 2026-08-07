@@ -1,5 +1,5 @@
 """
-Boutique Manager - export.py
+MyBoutiq - export.py
 
 Builds backup files in the familiar legacy spreadsheet layout:
 - Sheet "Feuille 1"  : old layout (one row per product + totals row),

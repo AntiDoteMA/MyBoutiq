@@ -1,5 +1,5 @@
 /**
- * Boutique Manager - frontend behaviour (offline, no CDN).
+ * MyBoutiq - frontend behaviour (offline, no CDN).
  * - Confirm dialogs for destructive forms
  * - Restock modal wiring
  * - Product table column sorting

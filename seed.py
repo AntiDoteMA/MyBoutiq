@@ -1,5 +1,5 @@
 """
-Boutique Manager - seed.py
+MyBoutiq - seed.py
 
 One-time import of the legacy spreadsheet ("Copy of WS'Shop.xlsx" / its CSV export)
 into the new database. It reproduces the internally-consistent legacy totals:

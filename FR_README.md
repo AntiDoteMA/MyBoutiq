@@ -1,4 +1,4 @@
-# Boutique Manager
+# MyBoutiq
 
 Application web de gestion de boutique : produits (avec photos), stock, ventes avec
 remises, dépenses, tableau de bord et exports — **sécurisée par une connexion** et

@@ -1,5 +1,5 @@
 """
-Boutique Manager - SQLAlchemy models.
+MyBoutiq - SQLAlchemy models.
 
 Data model follows PRD section 8:
 - Product           : resellable item (soft-deletable, keeps sales history)
