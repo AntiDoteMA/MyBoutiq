@@ -1,5 +1,6 @@
 # MyBoutiq
-FR : [FR README.md](https://github.com/AntiDoteMA/MyBoutiq/blob/main/FR_README.md)
+FR : [FR README.md](https://github.com/AntiDoteMA/MyBoutiq/blob/main/FR_README.md).
+
 A shop-management web app: products (with photos), stock, sales with discounts,
 expenses, dashboard and exports — **protected by a sign-in** and **bilingual FR / EN**.
 It replaces the legacy Excel spreadsheet and runs either **locally** (double-click
