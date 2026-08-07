@@ -11,3 +11,4 @@ static/uploads/*
 # OS
 Thumbs.db
 .DS_Store
+.env
