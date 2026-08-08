@@ -22,9 +22,12 @@
   .sf-lang a.active { background:var(--mb-brand); color:#fff; border-color:var(--mb-brand); }
   .sf-back { max-width:1000px; margin:1.5rem auto 0; padding:0 1.5rem; }
   .sf-back a { font-size:.84rem; font-weight:600; text-decoration:none; color:var(--mb-muted); }
+  .sf-back-arrow { width:.85rem; height:.85rem; vertical-align:-.15rem; }
   .sf-detail { max-width:1000px; margin:0 auto; padding:1.25rem 1.5rem 3rem; display:grid; grid-template-columns:1.1fr 1fr; gap:2.5rem; align-items:start; }
   .sf-detail-img { aspect-ratio:1/1; background:var(--mb-gold-soft); border-radius:16px; display:flex; align-items:center; justify-content:center; }
-  .sf-placeholder { font-size:4rem; opacity:.5; }
+  .sf-placeholder { display:inline-block; width:4rem; height:3.3rem; border:1.5px solid var(--mb-gold); border-radius:6px; position:relative; opacity:.75; }
+  .sf-placeholder::before { content:''; position:absolute; left:0; right:0; top:28%; border-top:1.5px solid var(--mb-gold); transform:skewY(24deg); }
+  .sf-placeholder::after { content:''; position:absolute; top:28%; bottom:0; left:50%; border-left:1.5px solid var(--mb-gold); transform:skewY(-24deg); }
   .sf-detail-cat { font-size:.74rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mb-gold); margin-bottom:.5rem; }
   .sf-detail-name { font-family:var(--font-display); font-weight:600; font-size:clamp(1.6rem,3vw,2.1rem); color:var(--mb-brand-dp); margin:0 0 .6rem; line-height:1.2; }
   .sf-detail-price { font-family:var(--font-display); font-weight:600; font-size:1.5rem; color:var(--mb-brand); margin:0 0 1.25rem; }
@@ -48,14 +51,14 @@
 <body>
 
 <div class="sf-topbar">
-  <a class="sf-brand" href="#">🏪 MyBoutiq</a>
+  <a class="sf-brand" href="#">MB · MyBoutiq</a>
   <div class="sf-lang"><a href="#" class="active">FR</a><a href="#">EN</a></div>
 </div>
 
-<div class="sf-back"><a href="#">← Retour à la collection</a></div>
+<div class="sf-back"><a href="#"><svg class="sf-back-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8h-10M7.5 4l-4 4 4 4"/></svg> Retour à la collection</a></div>
 
 <div class="sf-detail">
-  <div class="sf-detail-img"><span class="sf-placeholder">📦</span></div>
+  <div class="sf-detail-img"><span class="sf-placeholder" aria-hidden="true"></span></div>
   <div>
     <div class="sf-detail-cat">Sacs</div>
     <h1 class="sf-detail-name">Sac bandoulière cuir camel</h1>
@@ -79,15 +82,15 @@ Coloris : camel
   <h2>Vous aimerez peut-être aussi</h2>
   <div class="sf-related-grid">
     <a class="sf-rcard" href="#">
-      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-img"><span class="sf-placeholder" aria-hidden="true"></span></div>
       <div class="sf-rcard-body"><p class="sf-rcard-name">Pochette cuir noir</p><span class="sf-rcard-price">32,00 €</span></div>
     </a>
     <a class="sf-rcard" href="#">
-      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-img"><span class="sf-placeholder" aria-hidden="true"></span></div>
       <div class="sf-rcard-body"><p class="sf-rcard-name">Sac à main tressé</p><span class="sf-rcard-price">38,00 €</span></div>
     </a>
     <a class="sf-rcard" href="#">
-      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-img"><span class="sf-placeholder" aria-hidden="true"></span></div>
       <div class="sf-rcard-body"><p class="sf-rcard-name">Ceinture cuir marron</p><span class="sf-rcard-price">18,00 €</span></div>
     </a>
   </div>
