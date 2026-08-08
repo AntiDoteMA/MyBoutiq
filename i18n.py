@@ -51,9 +51,9 @@ STRINGS = {
         # ---- Shared actions ----
         "action.filter": "Filtrer",
         "action.reset": "Réinitialiser",
-        "action.add_product": "＋ Ajouter un produit",
-        "action.new_sale": "💶 Enregistrer une vente",
-        "action.new_expense": "💸 Ajouter une dépense",
+        "action.add_product": "Ajouter un produit",
+        "action.new_sale": "Enregistrer une vente",
+        "action.new_expense": "Ajouter une dépense",
         "action.cancel": "Annuler",
         "action.save": "Enregistrer",
         "action.confirm": "Valider",
@@ -127,7 +127,7 @@ STRINGS = {
 
         # Sales
         "sales.title": "Historique des ventes",
-        "sales.new": "💶 Nouvelle vente",
+        "sales.new": "Nouvelle vente",
         "sales.total_received": "Total encaissé (ventes actives) :",
         "sales.from": "Du",
         "sales.to": "Au",
@@ -157,7 +157,7 @@ STRINGS = {
         "sale_form.discount_label": "Remise :",
         "sale_form.reduction": "% de réduction",
         "sale_form.total": "Total encaissé :",
-        "sale_form.submit": "💶 Valider la vente",
+        "sale_form.submit": "Valider la vente",
         "sale_form.qty_exceeds": "La quantité dépasse le stock disponible (%(n)s).",
         "sale_form.placeholder": "0,00",
 
@@ -177,10 +177,10 @@ STRINGS = {
         # Export
         "export.title": "Exporter les données",
         "export.intro": "Sauvegardez vos données au format familier : présentation de l'ancien tableau (lignes + ligne « Totaux »), historique des ventes avec la colonne Remise, et feuille des dépenses.",
-        "export.xlsx": "📗 Fichier Excel complet",
+        "export.xlsx": "Fichier Excel complet",
         "export.xlsx_desc": "Un classeur avec 3 feuilles : Feuille 1 (ancien format + totaux), Ventes, Dépenses.",
         "export.download_xlsx": "Télécharger le XLSX",
-        "export.csv": "📄 Fichiers CSV",
+        "export.csv": "Fichiers CSV",
         "export.csv_desc": "Un CSV par feuille, compatible avec l'ancien tableau.",
         "export.csv_fe11": "Feuille 1 (CSV)",
         "export.csv_sales": "Ventes (CSV)",
@@ -258,9 +258,9 @@ STRINGS = {
         # ---- Shared actions ----
         "action.filter": "Filter",
         "action.reset": "Reset",
-        "action.add_product": "＋ Add a product",
-        "action.new_sale": "💶 Register a sale",
-        "action.new_expense": "💸 Add an expense",
+        "action.add_product": "Add a product",
+        "action.new_sale": "Register a sale",
+        "action.new_expense": "Add an expense",
         "action.cancel": "Cancel",
         "action.save": "Save",
         "action.confirm": "Confirm",
@@ -334,7 +334,7 @@ STRINGS = {
 
         # Sales
         "sales.title": "Sales history",
-        "sales.new": "💶 New sale",
+        "sales.new": "New sale",
         "sales.total_received": "Total received (active sales):",
         "sales.from": "From",
         "sales.to": "To",
@@ -364,7 +364,7 @@ STRINGS = {
         "sale_form.discount_label": "Discount:",
         "sale_form.reduction": "% off",
         "sale_form.total": "Total charged:",
-        "sale_form.submit": "💶 Confirm sale",
+        "sale_form.submit": "Confirm sale",
         "sale_form.qty_exceeds": "Quantity exceeds the available stock (%(n)s).",
         "sale_form.placeholder": "0.00",
 
@@ -384,10 +384,10 @@ STRINGS = {
         # Export
         "export.title": "Export data",
         "export.intro": "Back up your data in the familiar layout: the legacy sheet (rows + a “Totaux” line), sales history with the Discount column, and the expenses sheet.",
-        "export.xlsx": "📗 Full Excel workbook",
+        "export.xlsx": "Full Excel workbook",
         "export.xlsx_desc": "A workbook with 3 sheets: Sheet 1 (legacy layout + totals), Sales, Expenses.",
         "export.download_xlsx": "Download the XLSX",
-        "export.csv": "📄 CSV files",
+        "export.csv": "CSV files",
         "export.csv_desc": "One CSV per sheet, compatible with the legacy spreadsheet.",
         "export.csv_fe11": "Sheet 1 (CSV)",
         "export.csv_sales": "Sales (CSV)",
