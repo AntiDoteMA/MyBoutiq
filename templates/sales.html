@@ -1,15 +1,108 @@
 {% extends "base.html" %}
 {% block title %}{{ _('sales.title') }} · MyBoutiq{% endblock %}
 {% block content %}
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-  <h2 class="mb-0">{{ _('sales.title') }}</h2>
+
+<div class="mb-page">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  .mb-page {
+    --mb-bg:         #F7F4EC;
+    --mb-surface:    #FFFFFF;
+    --mb-ink:        #232821;
+    --mb-muted:      #8A8272;
+    --mb-line:       #E7E0D2;
+    --mb-brand:      #1F4A3B;
+    --mb-brand-dp:   #163329;
+    --mb-brand-soft: #E4EBE6;
+    --mb-gold:       #B9893C;
+    --mb-gold-soft:  #F1E3C4;
+    --mb-danger:     #A2402F;
+    --mb-danger-sf:  #F4DED6;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .mb-page {
+    background: var(--mb-bg);
+    margin: -1.5rem -1.5rem 0;
+    padding: 1.75rem 1.5rem 2.5rem;
+    font-family: var(--font-body);
+    color: var(--mb-ink);
+  }
+  .mb-page * { box-sizing: border-box; }
+
+  .mb-page .mb-toolbar {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    justify-content: space-between; align-items: flex-end;
+    margin-bottom: 1.5rem;
+  }
+  .mb-page .mb-toolbar h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.9rem;
+    color: var(--mb-brand-dp); margin: 0; letter-spacing: -0.01em;
+  }
+  .mb-page .btn { border-radius: 8px; font-weight: 500; }
+  .mb-page .btn-primary { background: var(--mb-brand); border-color: var(--mb-brand); }
+  .mb-page .btn-primary:hover { background: var(--mb-brand-dp); border-color: var(--mb-brand-dp); }
+  .mb-page .btn-success { background: var(--mb-surface); color: var(--mb-brand); border-color: var(--mb-brand); }
+  .mb-page .btn-success:hover { background: var(--mb-brand); color: #fff; }
+  .mb-page .btn-warning { background: var(--mb-surface); color: var(--mb-gold); border-color: var(--mb-gold); }
+  .mb-page .btn-warning:hover { background: var(--mb-gold); color: #fff; }
+  .mb-page .btn-secondary { background: var(--mb-ink); border-color: var(--mb-ink); }
+  .mb-page .btn-secondary:hover { background: #3a4136; border-color: #3a4136; }
+  .mb-page .btn-outline-danger { color: var(--mb-danger); border-color: var(--mb-danger); }
+  .mb-page .btn-outline-danger:hover { background: var(--mb-danger); color: #fff; }
+
+  .mb-page .mb-summary { color: var(--mb-muted); margin-bottom: 1.25rem; font-size: .95rem; }
+  .mb-page .mb-summary strong {
+    font-family: var(--font-display); font-size: 1.15rem; color: var(--mb-brand); font-weight: 600;
+  }
+
+  .mb-page .mb-filters {
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 12px;
+    padding: .9rem 1rem .5rem; margin-bottom: 1.5rem; margin-left: 0; margin-right: 0;
+  }
+  .mb-page .mb-filters .form-label {
+    font-size: .72rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--mb-muted);
+  }
+  .mb-page .form-control, .mb-page .form-select {
+    border-color: var(--mb-line); border-radius: 8px; font-size: .92rem;
+  }
+  .mb-page .form-control:focus, .mb-page .form-select:focus {
+    border-color: var(--mb-brand); box-shadow: 0 0 0 .2rem rgba(31, 74, 59, .12);
+  }
+
+  .mb-page .mb-table-card {
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 12px; overflow: hidden;
+  }
+  .mb-page .table { margin-bottom: 0; }
+  .mb-page .table thead th {
+    background: var(--mb-bg); border-bottom: 1px solid var(--mb-line); color: var(--mb-muted);
+    font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    padding: .85rem 1rem; white-space: nowrap;
+  }
+  .mb-page .table td { padding: .75rem 1rem; vertical-align: middle; border-color: var(--mb-line); font-size: .92rem; }
+  .mb-page .table-hover tbody tr:hover { background: #FBF9F4; }
+  .mb-page .table td.text-center.text-muted { color: var(--mb-muted) !important; }
+  .mb-page .table-secondary { --bs-table-bg: #FAF8F2; }
+
+  .mb-page .badge { font-family: var(--font-body); font-weight: 600; font-size: .72rem; border-radius: 999px; padding: .35rem .65rem; }
+  .mb-page .badge.text-bg-warning { background: var(--mb-gold-soft) !important; color: #7A5A22 !important; }
+  .mb-page .badge.text-bg-secondary { background: var(--mb-line) !important; color: var(--mb-muted) !important; }
+
+  @media (max-width: 560px) {
+    .mb-page { margin: -1rem -1rem 0; padding: 1.25rem 1rem 2rem; }
+  }
+</style>
+
+<div class="mb-toolbar">
+  <h2>{{ _('sales.title') }}</h2>
   <a href="{{ url_for('sale_new') }}" class="btn btn-success">{{ _('sales.new') }}</a>
 </div>
 
-<p class="text-muted">{{ _('sales.total_received') }} <strong>{{ total_received|eur }}</strong></p>
+<p class="mb-summary">{{ _('sales.total_received') }} <strong>{{ total_received|eur }}</strong></p>
 
 <!-- Filters -->
-<form method="get" class="row g-2 mb-3">
+<form method="get" class="row g-2 mb-filters">
   <div class="col-md-3">
     <label class="form-label small mb-0">{{ _('sales.from') }}</label>
     <input type="date" name="from" value="{{ date_from }}" class="form-control">
@@ -30,7 +123,7 @@
   </div>
 </form>
 
-<div class="table-responsive">
+<div class="table-responsive mb-table-card">
   <table class="table table-hover align-middle">
     <thead class="table-light">
       <tr>
@@ -70,4 +163,6 @@
     </tbody>
   </table>
 </div>
+
+</div><!-- /.mb-page -->
 {% endblock %}

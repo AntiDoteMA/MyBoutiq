@@ -3,6 +3,59 @@
 {% block title %}{{ _('login.title') }} – MyBoutiq{% endblock %}
 
 {% block content %}
+<div class="mb-page">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  .mb-page {
+    --mb-bg:        #F7F4EC;
+    --mb-surface:   #FFFFFF;
+    --mb-ink:       #232821;
+    --mb-muted:     #8A8272;
+    --mb-line:      #E7E0D2;
+    --mb-brand:     #1F4A3B;
+    --mb-brand-dp:  #163329;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .mb-page {
+    background: var(--mb-bg);
+    margin: -1.5rem -1.5rem 0;
+    padding: 3rem 1.5rem;
+    min-height: calc(100vh - 90px);
+    font-family: var(--font-body);
+    color: var(--mb-ink);
+  }
+  .mb-page * { box-sizing: border-box; }
+
+  .mb-page .card {
+    border: 1px solid var(--mb-line); border-radius: 14px; box-shadow: none;
+    background: var(--mb-surface); margin-top: 2rem !important;
+  }
+  .mb-page .card-header {
+    background: var(--mb-surface); border-bottom: 1px solid var(--mb-line);
+    font-family: var(--font-display); font-weight: 600; font-size: 1.2rem;
+    color: var(--mb-brand-dp); padding: 1.1rem 1.4rem;
+  }
+  .mb-page .card-body { padding: 1.4rem; }
+  .mb-page .form-label {
+    font-size: .78rem; font-weight: 600; letter-spacing: .03em; color: var(--mb-muted);
+  }
+  .mb-page .form-control { border-color: var(--mb-line); border-radius: 8px; }
+  .mb-page .form-control:focus {
+    border-color: var(--mb-brand); box-shadow: 0 0 0 .2rem rgba(31, 74, 59, .12);
+  }
+  .mb-page .btn { border-radius: 8px; font-weight: 500; }
+  .mb-page .btn-primary { background: var(--mb-brand); border-color: var(--mb-brand); }
+  .mb-page .btn-primary:hover { background: var(--mb-brand-dp); border-color: var(--mb-brand-dp); }
+  .mb-page .btn-link { color: var(--mb-muted); text-decoration: none; }
+  .mb-page .btn-link:hover { color: var(--mb-brand); }
+
+  @media (max-width: 560px) {
+    .mb-page { margin: -1rem -1rem 0; padding: 2rem 1rem; }
+  }
+</style>
+
 <div class="row justify-content-center">
   <div class="col-md-4">
     <div class="card shadow-sm mt-5">
@@ -27,4 +80,6 @@
     </div>
   </div>
 </div>
+
+</div><!-- /.mb-page -->
 {% endblock %}

@@ -40,6 +40,7 @@ STRINGS = {
     "fr": {
         # ---- Navbar ----
         "nav.dashboard": "Tableau de bord",
+        "nav.showroom": "Boutique",
         "nav.products": "Produits",
         "nav.sales": "Ventes",
         "nav.expenses": "Dépenses",
@@ -246,6 +247,7 @@ STRINGS = {
     "en": {
         # ---- Navbar ----
         "nav.dashboard": "Dashboard",
+        "nav.showroom": "Showroom",
         "nav.products": "Products",
         "nav.sales": "Sales",
         "nav.expenses": "Expenses",

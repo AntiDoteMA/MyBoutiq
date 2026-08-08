@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="{{ 'en' if lang == 'en' else 'fr' }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyBoutiq{% if category %} · {{ category }}{% endif %}</title>
+<meta name="description" content="{{ 'Browse our current in-stock pieces.' if lang == 'en' else 'Découvrez nos pièces actuellement disponibles.' }}">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --mb-bg:        #F7F4EC;
+    --mb-surface:   #FFFFFF;
+    --mb-ink:       #232821;
+    --mb-muted:     #8A8272;
+    --mb-line:      #E7E0D2;
+    --mb-brand:     #1F4A3B;
+    --mb-brand-dp:  #163329;
+    --mb-gold:      #B9893C;
+    --mb-gold-soft: #F1E3C4;
+    --mb-danger:    #A2402F;
+    --mb-plum:      #6B4A63;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--mb-bg); color: var(--mb-ink);
+    font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--mb-brand); outline-offset: 2px; }
+
+  /* Top bar */
+  .sf-topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem; border-bottom: 1px solid var(--mb-line);
+    background: var(--mb-surface);
+  }
+  .sf-brand {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.3rem;
+    color: var(--mb-brand-dp); text-decoration: none; letter-spacing: -.01em;
+  }
+  .sf-header-actions { display: flex; align-items: center; gap: .75rem; }
+  .sf-admin {
+    font-size: .78rem; font-weight: 600; text-decoration: none; color: var(--mb-brand);
+    border: 1px solid var(--mb-brand); border-radius: 999px; padding: .3rem .7rem;
+  }
+  .sf-admin:hover { background: var(--mb-brand); color: #fff; }
+  .sf-lang { display: flex; gap: .35rem; }
+  .sf-lang a {
+    font-size: .78rem; font-weight: 600; text-decoration: none; color: var(--mb-muted);
+    border: 1px solid var(--mb-line); border-radius: 6px; padding: .3rem .55rem;
+  }
+  .sf-lang a.active { background: var(--mb-brand); color: #fff; border-color: var(--mb-brand); }
+
+  /* Hero */
+  .sf-hero {
+    text-align: center; padding: 3.25rem 1.5rem 2.5rem; max-width: 640px; margin: 0 auto;
+  }
+  .sf-hero h1 {
+    font-family: var(--font-display); font-weight: 600; font-size: clamp(2rem, 5vw, 2.9rem);
+    color: var(--mb-brand-dp); margin: 0 0 .6rem; letter-spacing: -0.01em;
+  }
+  .sf-hero p {
+    color: var(--mb-muted); font-size: 1.02rem; line-height: 1.6; margin: 0 auto 1.5rem; max-width: 480px;
+  }
+  .sf-cta-row { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .sf-cta {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .6rem 1.2rem; border-radius: 999px; text-decoration: none;
+    font-weight: 600; font-size: .88rem; border: 1px solid transparent;
+  }
+  .sf-cta-ig { background: var(--mb-plum); color: #fff; }
+  .sf-cta-ig:hover { background: #593c53; }
+  .sf-cta-fb { background: var(--mb-brand); color: #fff; }
+  .sf-cta-fb:hover { background: var(--mb-brand-dp); }
+
+  /* Category filter */
+  .sf-filters {
+    display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center;
+    padding: 0 1.5rem 2rem; max-width: 900px; margin: 0 auto;
+  }
+  .sf-pill {
+    text-decoration: none; font-size: .82rem; font-weight: 600; color: var(--mb-ink);
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 999px;
+    padding: .4rem 1rem;
+  }
+  .sf-pill.active { background: var(--mb-brand); color: #fff; border-color: var(--mb-brand); }
+  .sf-pill:hover:not(.active) { border-color: var(--mb-brand); }
+
+  /* Grid */
+  .sf-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.25rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 3.5rem;
+  }
+  .sf-card {
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 14px;
+    overflow: hidden; display: flex; flex-direction: column; text-decoration: none;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .sf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -16px rgba(35,40,33,.3); }
+  .sf-card-img {
+    aspect-ratio: 1 / 1; background: var(--mb-gold-soft); display: flex;
+    align-items: center; justify-content: center; overflow: hidden;
+  }
+  .sf-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sf-card-img .sf-placeholder { font-size: 2.2rem; opacity: .55; }
+  .sf-card-body { padding: .9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
+  .sf-card-cat {
+    font-size: .68rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--mb-gold);
+  }
+  .sf-card-name {
+    font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; line-height: 1.25;
+    color: var(--mb-ink); margin: 0;
+  }
+  .sf-card-desc {
+    font-size: .84rem; color: var(--mb-muted); line-height: 1.45; margin: 0;
+    flex: 1;
+  }
+  .sf-card-foot {
+    display: flex; align-items: center; justify-content: space-between; margin-top: .5rem;
+    gap: .5rem;
+  }
+  .sf-price {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--mb-brand);
+    font-variant-numeric: tabular-nums;
+  }
+  .sf-see {
+    font-size: .78rem; font-weight: 600; color: var(--mb-muted); white-space: nowrap;
+  }
+  .sf-card:hover .sf-see { color: var(--mb-brand); }
+
+  /* Empty state */
+  .sf-empty {
+    max-width: 480px; margin: 0 auto; padding: 3rem 1.5rem 5rem; text-align: center; color: var(--mb-muted);
+  }
+  .sf-empty h2 { font-family: var(--font-display); color: var(--mb-brand-dp); font-weight: 500; font-size: 1.4rem; }
+
+  .sf-footer {
+    border-top: 1px solid var(--mb-line); padding: 1.5rem; text-align: center;
+    font-size: .78rem; color: var(--mb-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) { .sf-card { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="sf-topbar">
+  <a class="sf-brand" href="{{ url_for('showroom') }}">🏪 MyBoutiq</a>
+  {% set cat_qs = ('category=' ~ category ~ '&') if category else '' %}
+  <div class="sf-header-actions">
+    <a class="sf-admin" href="{{ url_for('dashboard') if logged_in else url_for('login', next=url_for('dashboard')) }}">
+      {{ 'Admin' if lang == 'en' and logged_in else 'Admin login' if lang == 'en' else 'Administration' if logged_in else 'Connexion admin' }}
+    </a>
+    <div class="sf-lang">
+      <a href="?{{ cat_qs }}lang=fr" class="{{ 'active' if lang != 'en' }}">FR</a>
+      <a href="?{{ cat_qs }}lang=en" class="{{ 'active' if lang == 'en' }}">EN</a>
+    </div>
+  </div>
+</div>
+
+<div class="sf-hero">
+  <h1>{{ 'Our current collection' if lang == 'en' else 'Notre collection actuelle' }}</h1>
+  <p>
+    {{ 'A look at what we have in the shop right now. Message us to reserve a piece.' if lang == 'en'
+       else 'Un aperçu de ce que nous avons en boutique en ce moment. Écrivez-nous pour réserver une pièce.' }}
+  </p>
+  {% if instagram_url or facebook_url %}
+  <div class="sf-cta-row">
+    {% if instagram_url %}
+      <a href="{{ instagram_url }}" target="_blank" rel="noopener" class="sf-cta sf-cta-ig">
+        {{ 'Message us on Instagram' if lang == 'en' else 'Écrivez-nous sur Instagram' }}
+      </a>
+    {% endif %}
+    {% if facebook_url %}
+      <a href="{{ facebook_url }}" target="_blank" rel="noopener" class="sf-cta sf-cta-fb">
+        {{ 'Message us on Facebook' if lang == 'en' else 'Écrivez-nous sur Facebook' }}
+      </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% if categories %}
+<div class="sf-filters">
+  <a href="{{ url_for('showroom') }}" class="sf-pill {{ 'active' if not category }}">
+    {{ 'All' if lang == 'en' else 'Tout' }}
+  </a>
+  {% for c in categories %}
+    <a href="{{ url_for('showroom', category=c) }}" class="sf-pill {{ 'active' if category == c }}">{{ c }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if products %}
+<div class="sf-grid">
+  {% for p in products %}
+  <a class="sf-card" href="{{ url_for('showroom_product', pid=p.id) }}">
+    <div class="sf-card-img">
+      {% if p.image_url %}
+        <img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy">
+      {% else %}
+        <span class="sf-placeholder">📦</span>
+      {% endif %}
+    </div>
+    <div class="sf-card-body">
+      {% if p.category %}<div class="sf-card-cat">{{ p.category }}</div>{% endif %}
+      <p class="sf-card-name">{{ p.name }}</p>
+      {% if p.description %}<p class="sf-card-desc">{{ p.description|truncate(80) }}</p>{% endif %}
+      <div class="sf-card-foot">
+        <span class="sf-price">{{ p.sale_price|eur }}</span>
+        <span class="sf-see">{{ 'See piece →' if lang == 'en' else 'Voir la pièce →' }}</span>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="sf-empty">
+  <h2>{{ 'Nothing here yet' if lang == 'en' else 'Rien à afficher pour le moment' }}</h2>
+  <p>{{ 'New pieces are on their way — check back soon.' if lang == 'en' else 'De nouvelles pièces arrivent bientôt, repassez voir.' }}</p>
+</div>
+{% endif %}
+
+<div class="sf-footer">MyBoutiq</div>
+
+</body>
+</html>

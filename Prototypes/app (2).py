@@ -333,6 +333,17 @@ def chart_payload():
 
 def register_routes(app):
     @app.route("/")
+    def dashboard():
+        totals = kpi_totals()
+        products = Product.query.filter_by(is_deleted=False).all()
+        alerts = [p for p in products if p.status in ("low", "out")][:10]
+        return render_template(
+            "dashboard.html", totals=totals, charts=chart_payload(), alerts=alerts
+        )
+
+    # --------------------------- Public storefront -----------------------
+
+    @app.route("/boutique")
     def showroom():
         """Public, unauthenticated storefront — see the before_request whitelist.
 
@@ -353,18 +364,6 @@ def register_routes(app):
             category=category,
             instagram_url=os.getenv("SHOP_INSTAGRAM_URL", "").strip(),
             facebook_url=os.getenv("SHOP_FACEBOOK_URL", "").strip(),
-        )
-
-
-    # --------------------------- Public storefront -----------------------
-
-    @app.route("/dashboard")
-    def dashboard():
-        totals = kpi_totals()
-        products = Product.query.filter_by(is_deleted=False).all()
-        alerts = [p for p in products if p.status in ("low", "out")][:10]
-        return render_template(
-            "dashboard.html", totals=totals, charts=chart_payload(), alerts=alerts
         )
 
     @app.route("/boutique/produit/<int:pid>")

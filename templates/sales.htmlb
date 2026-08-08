@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ _('sales.title') }} · MyBoutiq{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">{{ _('sales.title') }}</h2>
+  <a href="{{ url_for('sale_new') }}" class="btn btn-success">{{ _('sales.new') }}</a>
+</div>
+
+<p class="text-muted">{{ _('sales.total_received') }} <strong>{{ total_received|eur }}</strong></p>
+
+<!-- Filters -->
+<form method="get" class="row g-2 mb-3">
+  <div class="col-md-3">
+    <label class="form-label small mb-0">{{ _('sales.from') }}</label>
+    <input type="date" name="from" value="{{ date_from }}" class="form-control">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label small mb-0">{{ _('sales.to') }}</label>
+    <input type="date" name="to" value="{{ date_to }}" class="form-control">
+  </div>
+  <div class="col-md-4">
+    <label class="form-label small mb-0">{{ _('sales.product') }}</label>
+    <select name="product" class="form-select">
+      <option value="">{{ _('sales.all_products') }}</option>
+      {% for n in names %}<option value="{{ n }}" {{ 'selected' if product_name == n }}>{{ n }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-auto align-self-end">
+    <button class="btn btn-secondary">{{ _('action.filter') }}</button>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>{{ _('sales.date') }}</th><th>{{ _('sales.product') }}</th><th>{{ _('sales.qty') }}</th><th>{{ _('sales.list_price') }}</th><th>{{ _('sales.charged') }}</th>
+        <th>{{ _('sales.discount') }}</th><th>{{ _('sales.total') }}</th><th>{{ _('sales.profit') }}</th><th>{{ _('sales.status') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sales %}
+      <tr class="{{ 'table-secondary text-muted' if s.refunded }}">
+        <td>{{ s.created_at|dte }} {{ s.created_at.strftime('%H:%M') }}</td>
+        <td>{{ s.product_name_snapshot }}</td>
+        <td>{{ s.quantity }}</td>
+        <td>{{ s.list_unit_price|eur }}</td>
+        <td>{{ s.charged_unit_price|eur }}</td>
+        <td>
+          {% if s.discount_per_unit > 0 %}
+            <span class="badge text-bg-warning">{{ s.discount_per_unit|eur }} / {{ '%.2f'|format(s.discount_percent)|replace('.', ',') }} %</span>
+          {% else %}<span class="text-muted">—</span>{% endif %}
+        </td>
+        <td>{{ s.total|eur }}</td>
+        <td>{{ s.profit|eur }}</td>
+        <td>
+          {% if s.refunded %}
+            <span class="badge text-bg-secondary">{{ _('sales.refunded') }}</span>
+          {% else %}
+            <form method="post" action="{{ url_for('sale_void', sid=s.id) }}" class="d-inline" data-confirm="{{ _('sales.confirm_void') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-outline-danger">{{ _('sales.void') }}</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="text-center text-muted py-4">{{ _('sales.empty') }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

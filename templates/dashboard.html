@@ -2,8 +2,184 @@
 {% block title %}{{ _('dashboard.title') }} – MyBoutiq{% endblock %}
 {% block content %}
 
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-  <h2 class="mb-0">{{ _('dashboard.title') }}</h2>
+<div class="mb-dashboard">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  .mb-dashboard {
+    --mb-bg:        #F7F4EC;
+    --mb-surface:   #FFFFFF;
+    --mb-ink:       #232821;
+    --mb-muted:     #8A8272;
+    --mb-line:      #E7E0D2;
+    --mb-brand:     #1F4A3B;
+    --mb-brand-dp:  #163329;
+    --mb-gold:      #B9893C;
+    --mb-gold-soft: #F1E3C4;
+    --mb-danger:    #A2402F;
+    --mb-danger-sf: #F4DED6;
+    --mb-plum:      #6B4A63;
+    --mb-plum-soft: #E7DCE3;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .mb-dashboard {
+    background: var(--mb-bg);
+    margin: -1.5rem -1.5rem 0;
+    padding: 1.75rem 1.5rem 2.5rem;
+    font-family: var(--font-body);
+    color: var(--mb-ink);
+  }
+  .mb-dashboard * { box-sizing: border-box; }
+
+  /* Toolbar */
+  .mb-toolbar {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    justify-content: space-between; align-items: flex-end;
+    margin-bottom: 1.75rem;
+  }
+  .mb-toolbar h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.9rem;
+    color: var(--mb-brand-dp);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .mb-dashboard .mb-toolbar .btn {
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.05rem;
+    border: 1px solid transparent;
+  }
+  .mb-dashboard .mb-toolbar .btn-primary {
+    background: var(--mb-brand); border-color: var(--mb-brand);
+  }
+  .mb-dashboard .mb-toolbar .btn-primary:hover { background: var(--mb-brand-dp); border-color: var(--mb-brand-dp); }
+  .mb-dashboard .mb-toolbar .btn-success {
+    background: var(--mb-surface); color: var(--mb-brand); border-color: var(--mb-brand);
+  }
+  .mb-dashboard .mb-toolbar .btn-success:hover { background: var(--mb-brand); color: #fff; }
+  .mb-dashboard .mb-toolbar .btn-warning {
+    background: var(--mb-surface); color: var(--mb-gold); border-color: var(--mb-gold);
+  }
+  .mb-dashboard .mb-toolbar .btn-warning:hover { background: var(--mb-gold); color: #fff; }
+
+  /* Hero KPI row */
+  .mb-hero-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .mb-tile {
+    background: var(--mb-surface);
+    border: 1px solid var(--mb-line);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .mb-tile:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -12px rgba(35,40,33,.25); }
+  .mb-tile::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .mb-tile-sales::before   { background: var(--mb-brand); }
+  .mb-tile-profit::before  { background: var(--mb-gold); }
+  .mb-tile-expenses::before{ background: var(--mb-danger); }
+  .mb-tile-margin::before  { background: var(--mb-plum); }
+  .mb-tile-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--mb-muted); margin-bottom: .4rem;
+  }
+  .mb-tile-value {
+    font-family: var(--font-display); font-weight: 500; font-size: 2rem;
+    line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--mb-ink);
+  }
+  .mb-tile-profit .mb-tile-value   { color: var(--mb-gold); }
+  .mb-tile-expenses .mb-tile-value { color: var(--mb-danger); }
+  .mb-tile-sales .mb-tile-value    { color: var(--mb-brand); }
+
+  /* Secondary strip */
+  .mb-strip-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem;
+    margin-bottom: 2rem;
+  }
+  .mb-pill {
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 10px;
+    padding: .7rem .9rem;
+  }
+  .mb-pill-label {
+    font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--mb-muted);
+  }
+  .mb-pill-value {
+    font-family: var(--font-display); font-size: 1.25rem; font-weight: 500;
+    color: var(--mb-ink); font-variant-numeric: tabular-nums;
+  }
+
+  /* Chart cards */
+  .mb-chart-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+  .mb-chart-row.r1 { grid-template-columns: 2fr 1fr; }
+  .mb-chart-row.r2 { grid-template-columns: 1.4fr 1fr; }
+  .mb-card {
+    background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 12px;
+    overflow: hidden;
+  }
+  .mb-card-head {
+    padding: .85rem 1.1rem; border-bottom: 1px solid var(--mb-line);
+    font-size: .78rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--mb-muted);
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .mb-card-head::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--mb-brand); flex-shrink: 0;
+  }
+  .mb-chart-doughnut .mb-card-head::before { background: var(--mb-gold); }
+  .mb-chart-bar .mb-card-head::before { background: var(--mb-ink); }
+  .mb-chart-top .mb-card-head::before { background: var(--mb-plum); }
+  .mb-card-body { padding: 1.1rem; }
+
+  /* Stock watch */
+  .mb-stock-card { margin-bottom: 1rem; }
+  .mb-stock-list { list-style: none; margin: 0; padding: 0; }
+  .mb-stock-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: .7rem 1.1rem; border-bottom: 1px solid var(--mb-line);
+    transition: background .12s ease;
+  }
+  .mb-stock-row:last-child { border-bottom: none; }
+  .mb-stock-row:hover { background: #FBF9F4; }
+  .mb-stock-row a {
+    color: var(--mb-ink); text-decoration: none; font-weight: 500;
+  }
+  .mb-stock-row a:hover { color: var(--mb-brand); text-decoration: underline; }
+  .mb-dashboard .mb-stock-row .badge {
+    font-family: var(--font-body); font-weight: 600; font-size: .72rem;
+    border-radius: 999px; padding: .35rem .7rem;
+  }
+  .mb-dashboard .mb-stock-row .badge.status-out { background: var(--mb-danger-sf); color: var(--mb-danger); }
+  .mb-dashboard .mb-stock-row .badge.status-low { background: var(--mb-gold-soft); color: #7A5A22; }
+  .mb-empty {
+    padding: 1.75rem 1.1rem; text-align: center; color: var(--mb-muted); font-size: .92rem;
+  }
+
+  @media (max-width: 992px) {
+    .mb-hero-row, .mb-strip-row { grid-template-columns: repeat(2, 1fr); }
+    .mb-chart-row.r1, .mb-chart-row.r2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .mb-hero-row, .mb-strip-row { grid-template-columns: 1fr; }
+    .mb-dashboard { margin: -1rem -1rem 0; padding: 1.25rem 1rem 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mb-tile { transition: none; }
+  }
+</style>
+
+<div class="mb-toolbar">
+  <h2>{{ _('dashboard.title') }}</h2>
   <div class="d-flex gap-2 flex-wrap">
     <a href="{{ url_for('product_new') }}" class="btn btn-primary">{{ _('action.add_product') }}</a>
     <a href="{{ url_for('sale_new') }}" class="btn btn-success">{{ _('action.new_sale') }}</a>
@@ -11,74 +187,86 @@
   </div>
 </div>
 
-<!-- KPI cards -->
-<div class="row g-3 mb-4">
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.total_sales') }}</div>
-    <div class="kpi-value">{{ totals.total_sales|eur }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.profit') }}</div>
-    <div class="kpi-value text-success">{{ totals.total_profit|eur }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.total_expenses') }}</div>
-    <div class="kpi-value text-danger">{{ totals.total_expenses|eur }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.operating') }}</div>
-    <div class="kpi-value text-warning">{{ totals.operating|eur }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.units_stock') }}</div>
-    <div class="kpi-value">{{ totals.units_stock }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.units_sold') }}</div>
-    <div class="kpi-value">{{ totals.units_sold }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.total_discounts') }}</div>
-    <div class="kpi-value">{{ totals.total_discounts|eur }}</div>
-  </div></div></div>
-  <div class="col-6 col-lg-3"><div class="card kpi shadow-sm"><div class="card-body">
-    <div class="kpi-label">{{ _('kpi.margin') }}</div>
-    <div class="kpi-value">{{ ((totals.total_profit / totals.units_sold) if totals.units_sold else 0.0) | eur }}</div>
-  </div></div></div>
+<!-- Hero KPIs -->
+<div class="mb-hero-row">
+  <div class="mb-tile mb-tile-sales">
+    <div class="mb-tile-label">{{ _('kpi.total_sales') }}</div>
+    <div class="mb-tile-value">{{ totals.total_sales|eur }}</div>
+  </div>
+  <div class="mb-tile mb-tile-profit">
+    <div class="mb-tile-label">{{ _('kpi.profit') }}</div>
+    <div class="mb-tile-value">{{ totals.total_profit|eur }}</div>
+  </div>
+  <div class="mb-tile mb-tile-expenses">
+    <div class="mb-tile-label">{{ _('kpi.total_expenses') }}</div>
+    <div class="mb-tile-value">{{ totals.total_expenses|eur }}</div>
+  </div>
+  <div class="mb-tile mb-tile-margin">
+    <div class="mb-tile-label">{{ _('kpi.margin') }}</div>
+    <div class="mb-tile-value">{{ ((totals.total_profit / totals.units_sold) if totals.units_sold else 0.0) | eur }}</div>
+  </div>
+</div>
+
+<!-- Secondary metrics -->
+<div class="mb-strip-row">
+  <div class="mb-pill">
+    <div class="mb-pill-label">{{ _('kpi.operating') }}</div>
+    <div class="mb-pill-value">{{ totals.operating|eur }}</div>
+  </div>
+  <div class="mb-pill">
+    <div class="mb-pill-label">{{ _('kpi.units_stock') }}</div>
+    <div class="mb-pill-value">{{ totals.units_stock }}</div>
+  </div>
+  <div class="mb-pill">
+    <div class="mb-pill-label">{{ _('kpi.units_sold') }}</div>
+    <div class="mb-pill-value">{{ totals.units_sold }}</div>
+  </div>
+  <div class="mb-pill">
+    <div class="mb-pill-label">{{ _('kpi.total_discounts') }}</div>
+    <div class="mb-pill-value">{{ totals.total_discounts|eur }}</div>
+  </div>
 </div>
 
 <!-- Charts -->
-<div class="row g-3 mb-4">
-  <div class="col-lg-8"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.line_title') }}</div>
-    <div class="card-body"><canvas id="chartLine" height="120"></canvas></div></div></div>
-  <div class="col-lg-4"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.doughnut_title') }}</div>
-    <div class="card-body"><canvas id="chartDoughnut" height="190"></canvas></div></div></div>
-</div>
-<div class="row g-3 mb-4">
-  <div class="col-lg-7"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.bar_title') }}</div>
-    <div class="card-body"><canvas id="chartBar" height="140"></canvas></div></div></div>
-  <div class="col-lg-5"><div class="card shadow-sm h-100"><div class="card-header">{{ _('chart.top_title') }}</div>
-    <div class="card-body"><canvas id="chartTop" height="140"></canvas></div></div></div>
-</div>
-
-<!-- Alerts -->
-<div class="card shadow-sm mb-4">
-  <div class="card-header">{{ _('alerts.title') }}</div>
-  <div class="card-body">
-    {% if alerts %}
-      <ul class="list-group">
-        {% for p in alerts %}
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('products', q=p.name) }}">{{ p.name }}</a>
-            <span class="badge status-{{ p.status }}">{{ p.stock }} {{ _('in.stock') }}</span>
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-muted mb-0">{{ _('alerts.none') }}</p>
-    {% endif %}
+<div class="mb-chart-row r1">
+  <div class="mb-card mb-chart-line">
+    <div class="mb-card-head">{{ _('chart.line_title') }}</div>
+    <div class="mb-card-body"><canvas id="chartLine" height="110"></canvas></div>
+  </div>
+  <div class="mb-card mb-chart-doughnut">
+    <div class="mb-card-head">{{ _('chart.doughnut_title') }}</div>
+    <div class="mb-card-body"><canvas id="chartDoughnut" height="180"></canvas></div>
   </div>
 </div>
+<div class="mb-chart-row r2">
+  <div class="mb-card mb-chart-bar">
+    <div class="mb-card-head">{{ _('chart.bar_title') }}</div>
+    <div class="mb-card-body"><canvas id="chartBar" height="130"></canvas></div>
+  </div>
+  <div class="mb-card mb-chart-top">
+    <div class="mb-card-head">{{ _('chart.top_title') }}</div>
+    <div class="mb-card-body"><canvas id="chartTop" height="130"></canvas></div>
+  </div>
+</div>
+
+<!-- Stock watch -->
+<div class="mb-card mb-stock-card">
+  <div class="mb-card-head">{{ _('alerts.title') }}</div>
+  {% if alerts %}
+    <ul class="mb-stock-list">
+      {% for p in alerts %}
+        <li class="mb-stock-row">
+          <a href="{{ url_for('products', q=p.name) }}">{{ p.name }}</a>
+          <span class="badge status-{{ p.status }}">{{ p.stock }} {{ _('in.stock') }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="mb-empty">{{ _('alerts.none') }}</p>
+  {% endif %}
+</div>
+
+</div><!-- /.mb-dashboard -->
 
 {% endblock %}
 
@@ -87,31 +275,40 @@
 <script>
 const charts = {{ charts|tojson }};
 window.addEventListener('DOMContentLoaded', function () {
-  Chart.defaults.color = '#555';
+  Chart.defaults.color = '#8A8272';
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.borderColor = '#E7E0D2';
+
   new Chart(document.getElementById('chartLine'), {
     type: 'line',
     data: { labels: charts.line.labels, datasets: [{
-      label: '{{ _('chart.sales') }}', data: charts.line.values, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,.1)', fill: true, tension: .3
+      label: '{{ _('chart.sales') }}', data: charts.line.values,
+      borderColor: '#1F4A3B', backgroundColor: 'rgba(31,74,59,.08)',
+      fill: true, tension: .35, pointRadius: 0, borderWidth: 2
     }]},
-    options: { scales: { y: { beginAtZero: true } } }
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#EFEAE0' } }, x: { grid: { display: false } } } }
   });
+
   new Chart(document.getElementById('chartBar'), {
     type: 'bar',
     data: { labels: charts.bar.labels, datasets: [
-      { label: '{{ _('chart.revenue') }}', data: charts.bar.revenue, backgroundColor: '#0d6efd' },
-      { label: '{{ _('chart.expenses') }}', data: charts.bar.expenses, backgroundColor: '#dc3545' },
-      { label: '{{ _('chart.profit') }}', data: charts.bar.profit, backgroundColor: '#198754' }
+      { label: '{{ _('chart.revenue') }}', data: charts.bar.revenue, backgroundColor: '#1F4A3B', borderRadius: 4 },
+      { label: '{{ _('chart.expenses') }}', data: charts.bar.expenses, backgroundColor: '#A2402F', borderRadius: 4 },
+      { label: '{{ _('chart.profit') }}', data: charts.bar.profit, backgroundColor: '#B9893C', borderRadius: 4 }
     ]},
-    options: { scales: { y: { beginAtZero: true } } }
+    options: { scales: { y: { beginAtZero: true, grid: { color: '#EFEAE0' } }, x: { grid: { display: false } } } }
   });
+
   new Chart(document.getElementById('chartTop'), {
     type: 'bar',
-    data: { labels: charts.top.labels, datasets: [{ label: '{{ _('chart.qty_sold') }}', data: charts.top.values, backgroundColor: '#6f42c1' }]},
-    options: { indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+    data: { labels: charts.top.labels, datasets: [{ label: '{{ _('chart.qty_sold') }}', data: charts.top.values, backgroundColor: '#6B4A63', borderRadius: 4 }]},
+    options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#EFEAE0' } }, y: { grid: { display: false } } } }
   });
+
   new Chart(document.getElementById('chartDoughnut'), {
     type: 'doughnut',
-    data: { labels: charts.doughnut.labels, datasets: [{ data: charts.doughnut.values, backgroundColor: ['#198754', '#ffc107', '#dc3545'] }]}
+    data: { labels: charts.doughnut.labels, datasets: [{ data: charts.doughnut.values, backgroundColor: ['#1F4A3B', '#B9893C', '#A2402F'], borderWidth: 0 }]},
+    options: { cutout: '68%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14 } } } }
   });
 });
 </script>

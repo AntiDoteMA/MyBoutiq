@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview — products / sales / expenses</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --mb-bg:#F7F4EC; --mb-surface:#FFFFFF; --mb-ink:#232821; --mb-muted:#8A8272;
+  --mb-line:#E7E0D2; --mb-brand:#1F4A3B; --mb-brand-dp:#163329; --mb-brand-soft:#E4EBE6;
+  --mb-gold:#B9893C; --mb-gold-soft:#F1E3C4; --mb-danger:#A2402F; --mb-danger-sf:#F4DED6;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'Inter',sans-serif;
+}
+body { background: var(--mb-bg); font-family: var(--font-body); color: var(--mb-ink); margin:0; }
+.navbar.bg-primary { background-color: var(--mb-brand) !important; }
+.navbar-brand { font-family: var(--font-display); font-weight: 600; }
+.mb-page {
+  --mb-bg:#F7F4EC; --mb-surface:#FFFFFF; --mb-ink:#232821; --mb-muted:#8A8272;
+  --mb-line:#E7E0D2; --mb-brand:#1F4A3B; --mb-brand-dp:#163329; --mb-brand-soft:#E4EBE6;
+  --mb-gold:#B9893C; --mb-gold-soft:#F1E3C4; --mb-danger:#A2402F; --mb-danger-sf:#F4DED6;
+  --font-display:'Fraunces',Georgia,serif; --font-body:'Inter',sans-serif;
+  background:var(--mb-bg); padding:1.75rem 1.5rem 2.5rem; font-family:var(--font-body); color:var(--mb-ink);
+}
+.mb-page * { box-sizing:border-box; }
+.mb-toolbar { display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:flex-end; margin-bottom:1.5rem; }
+.mb-toolbar h2 { font-family:var(--font-display); font-weight:600; font-size:1.9rem; color:var(--mb-brand-dp); margin:0; }
+.btn { border-radius:8px; font-weight:500; }
+.btn-primary { background:var(--mb-brand); border-color:var(--mb-brand); }
+.btn-success { background:var(--mb-surface); color:var(--mb-brand); border-color:var(--mb-brand); }
+.btn-warning { background:var(--mb-surface); color:var(--mb-gold); border-color:var(--mb-gold); }
+.btn-secondary { background:var(--mb-ink); border-color:var(--mb-ink); }
+.btn-outline-secondary { color:var(--mb-muted); border-color:var(--mb-line); }
+.btn-outline-primary { color:var(--mb-brand); border-color:var(--mb-brand); }
+.btn-outline-success { color:var(--mb-brand); border-color:var(--mb-brand); }
+.btn-outline-danger { color:var(--mb-danger); border-color:var(--mb-danger); }
+.mb-summary { color:var(--mb-muted); margin-bottom:1.25rem; font-size:.95rem; }
+.mb-summary strong { font-family:var(--font-display); font-size:1.15rem; color:var(--mb-brand); font-weight:600; }
+.mb-filters { background:var(--mb-surface); border:1px solid var(--mb-line); border-radius:12px; padding:.9rem 1rem .5rem; margin-bottom:1.5rem; }
+.mb-filters .form-label { font-size:.72rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--mb-muted); }
+.form-control, .form-select { border-color:var(--mb-line); border-radius:8px; font-size:.92rem; }
+.mb-table-card { background:var(--mb-surface); border:1px solid var(--mb-line); border-radius:12px; overflow:hidden; }
+.table { margin-bottom:0; }
+.table thead th { background:var(--mb-bg); border-bottom:1px solid var(--mb-line); color:var(--mb-muted); font-size:.72rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; padding:.85rem 1rem; }
+.table td { padding:.75rem 1rem; vertical-align:middle; border-color:var(--mb-line); font-size:.92rem; }
+.table-hover tbody tr:hover { background:#FBF9F4; }
+.sort-link { color:var(--mb-muted); text-decoration:none; }
+.badge { font-family:var(--font-body); font-weight:600; font-size:.72rem; border-radius:999px; padding:.35rem .65rem; }
+.badge.status-ok { background:var(--mb-brand-soft); color:var(--mb-brand-dp); }
+.badge.status-low { background:var(--mb-gold-soft); color:#7A5A22; }
+.badge.status-out { background:var(--mb-danger-sf); color:var(--mb-danger); }
+.badge.text-bg-warning { background:var(--mb-gold-soft) !important; color:#7A5A22 !important; }
+.badge.text-bg-secondary { background:var(--mb-line) !important; color:var(--mb-muted) !important; }
+.thumb { width:44px; height:44px; object-fit:cover; border-radius:8px; border:1px solid var(--mb-line); }
+.thumb-placeholder { display:flex; align-items:center; justify-content:center; background:var(--mb-gold-soft); font-size:1.1rem; }
+.desc-snippet { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+h3.mb-section { font-family:var(--font-display); font-weight:500; color:var(--mb-brand-dp); margin:2.5rem 0 1rem; }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold" href="#">🏪 MyBoutiq</a>
+    <div class="d-flex align-items-center ms-auto gap-2">
+      <a href="#" class="btn btn-sm btn-outline-light">Mon compte</a>
+      <a href="#" class="btn btn-sm btn-outline-light">Déconnexion</a>
+      <a href="#" class="btn btn-sm btn-light">FR</a>
+      <a href="#" class="btn btn-sm btn-outline-light">EN</a>
+    </div>
+  </div>
+</nav>
+
+<div class="mb-page">
+
+<div class="mb-toolbar">
+  <h2>Produits</h2>
+  <a href="#" class="btn btn-primary">+ Ajouter un produit</a>
+</div>
+<form class="row g-2 mb-filters">
+  <div class="col-md-4"><input class="form-control" placeholder="Rechercher..."></div>
+  <div class="col-md-3"><select class="form-select"><option>Toutes catégories</option></select></div>
+  <div class="col-md-3"><select class="form-select"><option>Tous statuts</option></select></div>
+  <div class="col-auto"><button class="btn btn-secondary">Filtrer</button></div>
+</form>
+<div class="table-responsive mb-table-card">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>Photo</th><th><a class="sort-link" href="#">Nom</a></th><th>Catégorie</th><th>Achat</th><th>Vente</th><th>Stock</th><th>Statut</th><th class="text-end">Actions</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="thumb thumb-placeholder">📦</div></td>
+        <td class="fw-semibold">Sac bandoulière cuir camel<div class="text-muted small desc-snippet">Cuir souple, finitions dorées...</div></td>
+        <td>Sacs</td><td>18,00 €</td><td>45,00 €</td><td>4</td>
+        <td><span class="badge status-ok">En stock</span></td>
+        <td class="text-end"><a href="#" class="btn btn-sm btn-outline-primary">Modifier</a> <button class="btn btn-sm btn-outline-success">Réappro</button> <button class="btn btn-sm btn-outline-danger">Suppr.</button></td>
+      </tr>
+      <tr>
+        <td><div class="thumb thumb-placeholder">📦</div></td>
+        <td class="fw-semibold">Écharpe en laine bouclette</td>
+        <td>Accessoires</td><td>9,00 €</td><td>22,00 €</td><td>2</td>
+        <td><span class="badge status-low">Stock bas</span></td>
+        <td class="text-end"><a href="#" class="btn btn-sm btn-outline-primary">Modifier</a> <button class="btn btn-sm btn-outline-success">Réappro</button> <button class="btn btn-sm btn-outline-danger">Suppr.</button></td>
+      </tr>
+      <tr>
+        <td><div class="thumb thumb-placeholder">📦</div></td>
+        <td class="fw-semibold">Boucles d'oreilles dorées</td>
+        <td>Bijoux</td><td>5,00 €</td><td>14,00 €</td><td>0</td>
+        <td><span class="badge status-out">Rupture</span></td>
+        <td class="text-end"><a href="#" class="btn btn-sm btn-outline-primary">Modifier</a> <button class="btn btn-sm btn-outline-success">Réappro</button> <button class="btn btn-sm btn-outline-danger">Suppr.</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 class="mb-section">Ventes</h3>
+<p class="mb-summary">Total encaissé <strong>814,99 €</strong></p>
+<form class="row g-2 mb-filters">
+  <div class="col-md-3"><label class="form-label small mb-0">Du</label><input type="date" class="form-control"></div>
+  <div class="col-md-3"><label class="form-label small mb-0">Au</label><input type="date" class="form-control"></div>
+  <div class="col-md-4"><label class="form-label small mb-0">Produit</label><select class="form-select"><option>Tous les produits</option></select></div>
+  <div class="col-auto align-self-end"><button class="btn btn-secondary">Filtrer</button></div>
+</form>
+<div class="table-responsive mb-table-card">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>Date</th><th>Produit</th><th>Qté</th><th>Prix liste</th><th>Encaissé</th><th>Remise</th><th>Total</th><th>Bénéfice</th><th>Statut</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>08/08 14:20</td><td>Sac bandoulière cuir camel</td><td>1</td><td>45,00 €</td><td>40,00 €</td>
+        <td><span class="badge text-bg-warning">5,00 € / 11,11 %</span></td><td>40,00 €</td><td>22,00 €</td>
+        <td><form class="d-inline"><button class="btn btn-sm btn-outline-danger">Annuler</button></form></td>
+      </tr>
+      <tr class="table-secondary text-muted">
+        <td>07/08 10:05</td><td>Boucles d'oreilles dorées</td><td>2</td><td>14,00 €</td><td>14,00 €</td>
+        <td><span class="text-muted">—</span></td><td>28,00 €</td><td>18,00 €</td>
+        <td><span class="badge text-bg-secondary">Remboursée</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 class="mb-section">Dépenses</h3>
+<p class="mb-summary">Total <strong>129,88 €</strong></p>
+<form class="row g-2 mb-filters">
+  <div class="col-md-3"><label class="form-label small mb-0">Du</label><input type="date" class="form-control"></div>
+  <div class="col-md-3"><label class="form-label small mb-0">Au</label><input type="date" class="form-control"></div>
+  <div class="col-auto align-self-end"><button class="btn btn-secondary">Filtrer</button></div>
+</form>
+<div class="table-responsive mb-table-card">
+  <table class="table table-hover align-middle">
+    <thead><tr><th>Date</th><th>Description</th><th class="text-end">Montant</th></tr></thead>
+    <tbody>
+      <tr><td>05/08</td><td>Emballages cadeaux</td><td class="text-end">24,50 €</td></tr>
+      <tr><td>02/08</td><td>Livraison colis clients</td><td class="text-end">18,90 €</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</body>
+</html>

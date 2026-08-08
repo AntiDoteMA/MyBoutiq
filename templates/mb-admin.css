@@ -1,0 +1,143 @@
+/* MyBoutiq — "boutique ledger" theme.
+   Variables and base chrome (navbar, body, buttons, cards, forms, alerts)
+   apply site-wide so every page shares one identity. Table/filter/badge
+   specifics for the list pages stay scoped under .mb-page. The dashboard
+   keeps its own inline theme and is unaffected by this file. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --mb-bg:         #F7F4EC;
+  --mb-surface:    #FFFFFF;
+  --mb-ink:        #232821;
+  --mb-muted:      #8A8272;
+  --mb-line:       #E7E0D2;
+  --mb-brand:      #1F4A3B;
+  --mb-brand-dp:   #163329;
+  --mb-brand-soft: #E4EBE6;
+  --mb-gold:       #B9893C;
+  --mb-gold-soft:  #F1E3C4;
+  --mb-danger:     #A2402F;
+  --mb-danger-sf:  #F4DED6;
+  --mb-plum:       #6B4A63;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ------------------------------------------------------------------ */
+/* Site-wide base                                                      */
+/* ------------------------------------------------------------------ */
+body {
+  background: var(--mb-bg);
+  color: var(--mb-ink);
+  font-family: var(--font-body);
+}
+h1, h2, h3, h4, h5 { font-family: var(--font-display); color: var(--mb-brand-dp); }
+
+/* Navbar — swap Bootstrap's default blue for the brand green */
+.navbar.bg-primary { background-color: var(--mb-brand) !important; }
+.navbar-brand { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+
+/* Buttons — semantic classes stay the same, colors follow the palette */
+.btn { border-radius: 8px; font-weight: 500; }
+.btn-primary { background: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-primary:hover, .btn-primary:focus { background: var(--mb-brand-dp); border-color: var(--mb-brand-dp); }
+.btn-success { background: var(--mb-surface); color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-success:hover, .btn-success:focus { background: var(--mb-brand); color: #fff; }
+.btn-warning { background: var(--mb-surface); color: var(--mb-gold); border-color: var(--mb-gold); }
+.btn-warning:hover, .btn-warning:focus { background: var(--mb-gold); color: #fff; }
+.btn-secondary { background: var(--mb-ink); border-color: var(--mb-ink); }
+.btn-secondary:hover, .btn-secondary:focus { background: #3a4136; border-color: #3a4136; }
+.btn-outline-secondary { color: var(--mb-muted); border-color: var(--mb-line); }
+.btn-outline-secondary:hover { background: var(--mb-surface); color: var(--mb-ink); border-color: var(--mb-ink); }
+.btn-outline-primary { color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-outline-primary:hover { background: var(--mb-brand); color: #fff; }
+.btn-outline-success { color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-outline-success:hover { background: var(--mb-brand); color: #fff; }
+.btn-outline-danger { color: var(--mb-danger); border-color: var(--mb-danger); }
+.btn-outline-danger:hover { background: var(--mb-danger); color: #fff; }
+/* .btn-outline-light (navbar lang/account/logout) already reads fine on the new green */
+
+/* Cards — used on login, forms, export, error pages */
+.card { border-color: var(--mb-line); border-radius: 12px; }
+.card-header { background: var(--mb-surface); border-color: var(--mb-line); font-family: var(--font-display); color: var(--mb-brand-dp); }
+
+/* Form controls */
+.form-control, .form-select { border-color: var(--mb-line); border-radius: 8px; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--mb-brand); box-shadow: 0 0 0 .2rem rgba(31, 74, 59, .12);
+}
+.form-label { color: var(--mb-ink); }
+
+/* Alerts (flash messages) */
+.alert-success { background: var(--mb-brand-soft); color: var(--mb-brand-dp); border-color: var(--mb-brand-soft); }
+.alert-danger  { background: var(--mb-danger-sf); color: var(--mb-danger); border-color: var(--mb-danger-sf); }
+.alert-warning { background: var(--mb-gold-soft); color: #7A5A22; border-color: var(--mb-gold-soft); }
+
+/* Badges used outside .mb-page too (e.g. status badges anywhere) */
+.badge.status-ok  { background: var(--mb-brand-soft); color: var(--mb-brand-dp); }
+.badge.status-low { background: var(--mb-gold-soft); color: #7A5A22; }
+.badge.status-out { background: var(--mb-danger-sf); color: var(--mb-danger); }
+
+/* Modals site-wide */
+.modal-content { border-radius: 14px; border: none; }
+.modal-header, .modal-footer { border-color: var(--mb-line); }
+
+/* ------------------------------------------------------------------ */
+/* .mb-page — layout specifics for products / sales / expenses         */
+/* ------------------------------------------------------------------ */
+.mb-page {
+  background: var(--mb-bg);
+  margin: -1.5rem -1.5rem 0;
+  padding: 1.75rem 1.5rem 2.5rem;
+  min-height: calc(100vh - 90px);
+}
+.mb-page * { box-sizing: border-box; }
+
+.mb-page .mb-toolbar {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  justify-content: space-between; align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+.mb-page .mb-toolbar h2 { font-weight: 600; font-size: 1.9rem; margin: 0; letter-spacing: -0.01em; }
+
+.mb-page .mb-summary { color: var(--mb-muted); margin-bottom: 1.25rem; font-size: .95rem; }
+.mb-page .mb-summary strong {
+  font-family: var(--font-display); font-size: 1.15rem; color: var(--mb-brand); font-weight: 600;
+}
+
+.mb-page .mb-filters {
+  background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 12px;
+  padding: .9rem 1rem .5rem; margin-bottom: 1.5rem; margin-left: 0; margin-right: 0;
+}
+.mb-page .mb-filters .form-label {
+  font-size: .72rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--mb-muted);
+}
+
+.mb-page .mb-table-card {
+  background: var(--mb-surface); border: 1px solid var(--mb-line); border-radius: 12px; overflow: hidden;
+}
+.mb-page .table { margin-bottom: 0; }
+.mb-page .table thead th {
+  background: var(--mb-bg); border-bottom: 1px solid var(--mb-line); color: var(--mb-muted);
+  font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  padding: .85rem 1rem; white-space: nowrap;
+}
+.mb-page .table td { padding: .75rem 1rem; vertical-align: middle; border-color: var(--mb-line); font-size: .92rem; }
+.mb-page .table-hover tbody tr:hover { background: #FBF9F4; }
+.mb-page .table td.text-center.text-muted { color: var(--mb-muted) !important; }
+.mb-page .sort-link { color: var(--mb-muted); text-decoration: none; }
+.mb-page .sort-link:hover { color: var(--mb-brand); text-decoration: underline; }
+.mb-page .table-secondary { --bs-table-bg: #FAF8F2; }
+
+.mb-page .badge { font-family: var(--font-body); font-weight: 600; font-size: .72rem; border-radius: 999px; padding: .35rem .65rem; }
+.mb-page .badge.text-bg-warning { background: var(--mb-gold-soft) !important; color: #7A5A22 !important; }
+.mb-page .badge.text-bg-secondary { background: var(--mb-line) !important; color: var(--mb-muted) !important; }
+
+.mb-page .thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid var(--mb-line); }
+.mb-page .thumb-placeholder { display: flex; align-items: center; justify-content: center; background: var(--mb-gold-soft); font-size: 1.1rem; }
+.mb-page .desc-snippet { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .mb-page { margin: -1rem -1rem 0; padding: 1.25rem 1rem 2rem; }
+}

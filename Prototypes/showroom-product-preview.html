@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview — product detail</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
+  :root {
+    --mb-bg:#F7F4EC; --mb-surface:#FFFFFF; --mb-ink:#232821; --mb-muted:#8A8272;
+    --mb-line:#E7E0D2; --mb-brand:#1F4A3B; --mb-brand-dp:#163329; --mb-gold:#B9893C;
+    --mb-gold-soft:#F1E3C4; --mb-plum:#6B4A63;
+    --font-display:'Fraunces',Georgia,serif; --font-body:'Inter',sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--mb-bg); color:var(--mb-ink); font-family:var(--font-body); }
+  a { color:inherit; }
+  .sf-topbar { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.5rem; border-bottom:1px solid var(--mb-line); background:var(--mb-surface); }
+  .sf-brand { font-family:var(--font-display); font-weight:600; font-size:1.3rem; color:var(--mb-brand-dp); text-decoration:none; }
+  .sf-lang { display:flex; gap:.35rem; }
+  .sf-lang a { font-size:.78rem; font-weight:600; text-decoration:none; color:var(--mb-muted); border:1px solid var(--mb-line); border-radius:6px; padding:.3rem .55rem; }
+  .sf-lang a.active { background:var(--mb-brand); color:#fff; border-color:var(--mb-brand); }
+  .sf-back { max-width:1000px; margin:1.5rem auto 0; padding:0 1.5rem; }
+  .sf-back a { font-size:.84rem; font-weight:600; text-decoration:none; color:var(--mb-muted); }
+  .sf-detail { max-width:1000px; margin:0 auto; padding:1.25rem 1.5rem 3rem; display:grid; grid-template-columns:1.1fr 1fr; gap:2.5rem; align-items:start; }
+  .sf-detail-img { aspect-ratio:1/1; background:var(--mb-gold-soft); border-radius:16px; display:flex; align-items:center; justify-content:center; }
+  .sf-placeholder { font-size:4rem; opacity:.5; }
+  .sf-detail-cat { font-size:.74rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--mb-gold); margin-bottom:.5rem; }
+  .sf-detail-name { font-family:var(--font-display); font-weight:600; font-size:clamp(1.6rem,3vw,2.1rem); color:var(--mb-brand-dp); margin:0 0 .6rem; line-height:1.2; }
+  .sf-detail-price { font-family:var(--font-display); font-weight:600; font-size:1.5rem; color:var(--mb-brand); margin:0 0 1.25rem; }
+  .sf-detail-desc { white-space:pre-line; line-height:1.65; font-size:.96rem; margin:0 0 1.75rem; padding-top:1.25rem; border-top:1px solid var(--mb-line); }
+  .sf-cta-row { display:flex; gap:.6rem; flex-wrap:wrap; }
+  .sf-cta { display:inline-flex; align-items:center; gap:.4rem; padding:.7rem 1.35rem; border-radius:999px; text-decoration:none; font-weight:600; font-size:.9rem; }
+  .sf-cta-ig { background:var(--mb-plum); color:#fff; }
+  .sf-cta-fb { background:var(--mb-brand); color:#fff; }
+  .sf-related { max-width:1000px; margin:0 auto; padding:0 1.5rem 4rem; }
+  .sf-related h2 { font-family:var(--font-display); font-weight:500; font-size:1.15rem; color:var(--mb-brand-dp); margin:0 0 1rem; }
+  .sf-related-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1rem; }
+  .sf-rcard { text-decoration:none; background:var(--mb-surface); border:1px solid var(--mb-line); border-radius:12px; overflow:hidden; display:block; }
+  .sf-rcard-img { aspect-ratio:1/1; background:var(--mb-gold-soft); display:flex; align-items:center; justify-content:center; }
+  .sf-rcard-body { padding:.6rem .7rem .8rem; }
+  .sf-rcard-name { font-family:var(--font-display); font-size:.92rem; margin:0 0 .2rem; }
+  .sf-rcard-price { font-size:.82rem; color:var(--mb-brand); font-weight:600; }
+  .sf-footer { border-top:1px solid var(--mb-line); padding:1.5rem; text-align:center; font-size:.78rem; color:var(--mb-muted); }
+  @media (max-width:720px) { .sf-detail { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="sf-topbar">
+  <a class="sf-brand" href="#">🏪 MyBoutiq</a>
+  <div class="sf-lang"><a href="#" class="active">FR</a><a href="#">EN</a></div>
+</div>
+
+<div class="sf-back"><a href="#">← Retour à la collection</a></div>
+
+<div class="sf-detail">
+  <div class="sf-detail-img"><span class="sf-placeholder">📦</span></div>
+  <div>
+    <div class="sf-detail-cat">Sacs</div>
+    <h1 class="sf-detail-name">Sac bandoulière cuir camel</h1>
+    <p class="sf-detail-price">45,00 €</p>
+    <p class="sf-detail-desc">Un sac bandoulière en cuir véritable, souple et résistant 🤎
+
+Bandoulière ajustable, fermeture zippée, doublure intérieure avec une poche pour votre téléphone.
+
+Dimensions : 28 x 20 x 8 cm
+Coloris : camel
+
+✨ Pièce unique, disponible immédiatement</p>
+    <div class="sf-cta-row">
+      <a href="#" class="sf-cta sf-cta-ig">DM pour commander sur Instagram</a>
+      <a href="#" class="sf-cta sf-cta-fb">Écrire sur Facebook</a>
+    </div>
+  </div>
+</div>
+
+<div class="sf-related">
+  <h2>Vous aimerez peut-être aussi</h2>
+  <div class="sf-related-grid">
+    <a class="sf-rcard" href="#">
+      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-body"><p class="sf-rcard-name">Pochette cuir noir</p><span class="sf-rcard-price">32,00 €</span></div>
+    </a>
+    <a class="sf-rcard" href="#">
+      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-body"><p class="sf-rcard-name">Sac à main tressé</p><span class="sf-rcard-price">38,00 €</span></div>
+    </a>
+    <a class="sf-rcard" href="#">
+      <div class="sf-rcard-img"><span class="sf-placeholder" style="font-size:2rem;">📦</span></div>
+      <div class="sf-rcard-body"><p class="sf-rcard-name">Ceinture cuir marron</p><span class="sf-rcard-price">18,00 €</span></div>
+    </a>
+  </div>
+</div>
+
+<div class="sf-footer">MyBoutiq</div>
+
+</body>
+</html>
