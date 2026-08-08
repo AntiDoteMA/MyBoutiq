@@ -1,40 +1,126 @@
-/* MyBoutiq - custom styles on top of Bootstrap 5 (offline). */
+/* MyBoutiq - shared visual language on top of Bootstrap 5 (offline). */
 
-.kpi {
-  border-left: 5px solid #0d6efd;
-  border-radius: .5rem;
+:root {
+  --mb-bg: #F7F4EC;
+  --mb-surface: #FFFFFF;
+  --mb-ink: #232821;
+  --mb-muted: #8A8272;
+  --mb-line: #E7E0D2;
+  --mb-brand: #1F4A3B;
+  --mb-brand-dp: #163329;
+  --mb-brand-soft: #E4EBE6;
+  --mb-gold: #B9893C;
+  --mb-gold-soft: #F1E3C4;
+  --mb-danger: #A2402F;
+  --mb-danger-sf: #F4DED6;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-.kpi-value { font-size: 1.55rem; font-weight: 700; line-height: 1.2; }
-.kpi-label { font-size: .78rem; text-transform: uppercase; color: #6c757d; }
 
+body {
+  background: var(--mb-bg);
+  color: var(--mb-ink);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); color: var(--mb-brand-dp); }
+
+/* Shared brand mark: quiet and monochrome instead of a platform-dependent emoji. */
+.mb-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  margin-right: .35rem;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  vertical-align: -.15rem;
+}
+
+/* Admin pages that do not have page-specific theme CSS (export/error). */
+.btn { border-radius: 8px; font-weight: 500; }
+.btn-primary { background: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-primary:hover, .btn-primary:focus { background: var(--mb-brand-dp); border-color: var(--mb-brand-dp); }
+.btn-success { background: var(--mb-surface); color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-success:hover, .btn-success:focus { background: var(--mb-brand); color: #fff; border-color: var(--mb-brand); }
+.btn-warning { background: var(--mb-surface); color: var(--mb-gold); border-color: var(--mb-gold); }
+.btn-warning:hover, .btn-warning:focus { background: var(--mb-gold); color: #fff; border-color: var(--mb-gold); }
+.btn-secondary { background: var(--mb-ink); border-color: var(--mb-ink); }
+.btn-secondary:hover, .btn-secondary:focus { background: #3a4136; border-color: #3a4136; }
+.btn-outline-primary { color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-outline-primary:hover, .btn-outline-primary:focus { background: var(--mb-brand); color: #fff; }
+.btn-outline-success { color: var(--mb-brand); border-color: var(--mb-brand); }
+.btn-outline-success:hover, .btn-outline-success:focus { background: var(--mb-brand); color: #fff; }
+.btn-outline-warning { color: var(--mb-gold); border-color: var(--mb-gold); }
+.btn-outline-warning:hover, .btn-outline-warning:focus { background: var(--mb-gold); color: #fff; }
+.btn-outline-secondary { color: var(--mb-muted); border-color: var(--mb-line); }
+.btn-outline-secondary:hover, .btn-outline-secondary:focus { background: var(--mb-surface); color: var(--mb-ink); border-color: var(--mb-ink); }
+.btn-outline-danger { color: var(--mb-danger); border-color: var(--mb-danger); }
+.btn-outline-danger:hover, .btn-outline-danger:focus { background: var(--mb-danger); color: #fff; }
+
+.card { border-color: var(--mb-line); border-radius: 12px; }
+.card.shadow-sm { box-shadow: none !important; }
+.card-header { background: var(--mb-surface); border-color: var(--mb-line); color: var(--mb-brand-dp); }
+
+.form-control, .form-select { border-color: var(--mb-line); border-radius: 8px; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--mb-brand);
+  box-shadow: 0 0 0 .2rem rgba(31, 74, 59, .12);
+}
+
+/* Flash messages */
+.alert-success { background: var(--mb-brand-soft); color: var(--mb-brand-dp); border-color: var(--mb-brand-soft); }
+.alert-danger { background: var(--mb-danger-sf); color: var(--mb-danger); border-color: var(--mb-danger-sf); }
+.alert-warning { background: var(--mb-gold-soft); color: #7A5A22; border-color: var(--mb-gold-soft); }
+
+/* Product image placeholders */
 .thumb {
   width: 48px;
   height: 48px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--mb-line);
 }
 .thumb-placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #f1f3f5;
-  font-size: 1.3rem;
+  background: var(--mb-gold-soft);
+  color: var(--mb-gold);
 }
+.mb-placeholder-mark { width: 1.25rem; height: 1.25rem; display: block; }
+.mb-placeholder-mark svg { width: 100%; height: 100%; display: block; }
 
 /* Uniform stock badges */
-.badge.status-ok   { background: #198754; }
-.badge.status-low  { background: #ffc107; color: #212529; }
-.badge.status-out  { background: #dc3545; }
+.badge.status-ok { background: var(--mb-brand-soft); color: var(--mb-brand-dp); }
+.badge.status-low { background: var(--mb-gold-soft); color: #7A5A22; }
+.badge.status-out { background: var(--mb-danger-sf); color: var(--mb-danger); }
 
 .table td, .table th { vertical-align: middle; }
-
-/* Product description snippet keeps line breaks (post-style text). */
-.desc-snippet {
-  white-space: pre-line;
-  max-width: 420px;
-}
-
+.desc-snippet { white-space: pre-line; max-width: 420px; }
 .sort-link { text-decoration: none; color: inherit; }
-.sort-link:hover { color: #0d6efd; }
+.sort-link:hover { color: var(--mb-brand); }
+
+/* Error state */
+.mb-error-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 1px solid var(--mb-danger);
+  border-radius: 50%;
+  background: var(--mb-danger-sf);
+  color: var(--mb-danger);
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
 
 canvas { max-height: 280px; }
