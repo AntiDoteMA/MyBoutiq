@@ -29,9 +29,22 @@
 
   .sf-topbar {
     display: flex; align-items: center; justify-content: space-between;
+    gap: .75rem; flex-wrap: wrap;
     padding: 1rem 1.5rem; border-bottom: 1px solid var(--mb-line); background: var(--mb-surface);
   }
-  .sf-brand { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; color: var(--mb-brand-dp); text-decoration: none; }
+  .sf-brand { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; color: var(--mb-brand-dp); text-decoration: none; }
+  .sf-brand-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.55rem; height: 1.55rem; border: 1px solid var(--mb-brand);
+    border-radius: 6px; color: var(--mb-brand); font-family: var(--font-body);
+    font-size: .58rem; font-weight: 700; letter-spacing: .04em; line-height: 1;
+  }
+  .sf-header-actions { display: flex; align-items: center; gap: .75rem; }
+  .sf-admin {
+    font-size: .78rem; font-weight: 600; text-decoration: none; color: var(--mb-brand);
+    border: 1px solid var(--mb-brand); border-radius: 999px; padding: .3rem .7rem;
+  }
+  .sf-admin:hover { background: var(--mb-brand); color: #fff; }
   .sf-lang { display: flex; gap: .35rem; }
   .sf-lang a { font-size: .78rem; font-weight: 600; text-decoration: none; color: var(--mb-muted); border: 1px solid var(--mb-line); border-radius: 6px; padding: .3rem .55rem; }
   .sf-lang a.active { background: var(--mb-brand); color: #fff; border-color: var(--mb-brand); }
@@ -43,6 +56,7 @@
     font-size: .84rem; font-weight: 600; text-decoration: none; color: var(--mb-muted);
   }
   .sf-back a:hover { color: var(--mb-brand); }
+  .sf-back-arrow { width: .85rem; height: .85rem; vertical-align: -.15rem; }
 
   .sf-detail {
     max-width: 1000px; margin: 0 auto; padding: 1.25rem 1.5rem 3rem;
@@ -53,7 +67,8 @@
     overflow: hidden; display: flex; align-items: center; justify-content: center;
   }
   .sf-detail-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sf-detail-img .sf-placeholder { font-size: 4rem; opacity: .5; }
+  .sf-placeholder { display: inline-flex; width: 4rem; height: 4rem; color: var(--mb-gold); opacity: .75; }
+  .sf-placeholder svg { width: 100%; height: 100%; display: block; }
 
   .sf-detail-cat {
     font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
@@ -112,6 +127,14 @@
   @media (max-width: 720px) {
     .sf-detail { grid-template-columns: 1fr; }
   }
+  @media (max-width: 480px) {
+    .sf-topbar { padding: .85rem 1rem; }
+    .sf-brand { font-size: 1.15rem; }
+    .sf-header-actions { gap: .45rem; }
+    .sf-admin { padding: .3rem .55rem; font-size: .7rem; }
+    .sf-lang { gap: .2rem; }
+    .sf-lang a { padding: .28rem .45rem; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .sf-rcard { transition: none; }
   }
@@ -120,17 +143,25 @@
 <body>
 
 <div class="sf-topbar">
-  <a class="sf-brand" href="{{ url_for('showroom') }}">🏪 MyBoutiq</a>
+  <a class="sf-brand" href="{{ url_for('showroom') }}"><span class="sf-brand-mark" aria-hidden="true">MB</span>MyBoutiq</a>
   {% set cat_qs = ('category=' ~ product.category ~ '&') if product.category else '' %}
-  <div class="sf-lang">
-    <a href="?{{ cat_qs }}lang=fr" class="{{ 'active' if lang != 'en' }}">FR</a>
-    <a href="?{{ cat_qs }}lang=en" class="{{ 'active' if lang == 'en' }}">EN</a>
+  <div class="sf-header-actions">
+    <a class="sf-admin" href="{{ url_for('dashboard') if logged_in else url_for('login', next=url_for('dashboard')) }}">
+      {{ 'Admin' if lang == 'en' and logged_in else 'Admin login' if lang == 'en' else 'Administration' if logged_in else 'Connexion admin' }}
+    </a>
+    <div class="sf-lang">
+      <a href="?{{ cat_qs }}lang=fr" class="{{ 'active' if lang != 'en' }}">FR</a>
+      <a href="?{{ cat_qs }}lang=en" class="{{ 'active' if lang == 'en' }}">EN</a>
+    </div>
   </div>
 </div>
 
 <div class="sf-back">
   <a href="{{ url_for('showroom', category=product.category) if product.category else url_for('showroom') }}">
-    ← {{ 'Back to collection' if lang == 'en' else 'Retour à la collection' }}
+    <svg class="sf-back-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M13.5 8h-10M7.5 4l-4 4 4 4"/>
+    </svg>
+    {{ 'Back to collection' if lang == 'en' else 'Retour à la collection' }}
   </a>
 </div>
 
@@ -139,7 +170,12 @@
     {% if product.image_url %}
       <img src="{{ product.image_url }}" alt="{{ product.name }}">
     {% else %}
-      <span class="sf-placeholder">📦</span>
+      <span class="sf-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3.5 7 8.5-4 8.5 4v10l-8.5 4-8.5-4V7Z"/>
+          <path d="m3.5 7 8.5 4 8.5-4M12 11v10"/>
+        </svg>
+      </span>
     {% endif %}
   </div>
   <div>
@@ -180,7 +216,12 @@
           {% if r.image_url %}
             <img src="{{ r.image_url }}" alt="{{ r.name }}" loading="lazy">
           {% else %}
-            <span class="sf-placeholder">📦</span>
+            <span class="sf-placeholder" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3.5 7 8.5-4 8.5 4v10l-8.5 4-8.5-4V7Z"/>
+                <path d="m3.5 7 8.5 4 8.5-4M12 11v10"/>
+              </svg>
+            </span>
           {% endif %}
         </div>
         <div class="sf-rcard-body">

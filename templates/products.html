@@ -155,7 +155,14 @@
           {% if p.image_url %}
             <img src="{{ p.image_url }}" class="thumb" alt="">
           {% else %}
-            <div class="thumb thumb-placeholder">📦</div>
+            <div class="thumb thumb-placeholder" aria-label="{{ _('products.photo') }} unavailable">
+              <span class="mb-placeholder-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m3.5 7 8.5-4 8.5 4v10l-8.5 4-8.5-4V7Z"/>
+                  <path d="m3.5 7 8.5 4 8.5-4M12 11v10"/>
+                </svg>
+              </span>
+            </div>
           {% endif %}
         </td>
         <td class="fw-semibold">

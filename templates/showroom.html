@@ -34,12 +34,20 @@
   /* Top bar */
   .sf-topbar {
     display: flex; align-items: center; justify-content: space-between;
+    gap: .75rem; flex-wrap: wrap;
     padding: 1rem 1.5rem; border-bottom: 1px solid var(--mb-line);
     background: var(--mb-surface);
   }
   .sf-brand {
+    display: inline-flex; align-items: center; gap: .4rem;
     font-family: var(--font-display); font-weight: 600; font-size: 1.3rem;
     color: var(--mb-brand-dp); text-decoration: none; letter-spacing: -.01em;
+  }
+  .sf-brand-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.55rem; height: 1.55rem; border: 1px solid var(--mb-brand);
+    border-radius: 6px; color: var(--mb-brand); font-family: var(--font-body);
+    font-size: .58rem; font-weight: 700; letter-spacing: .04em; line-height: 1;
   }
   .sf-header-actions { display: flex; align-items: center; gap: .75rem; }
   .sf-admin {
@@ -105,7 +113,8 @@
     align-items: center; justify-content: center; overflow: hidden;
   }
   .sf-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .sf-card-img .sf-placeholder { font-size: 2.2rem; opacity: .55; }
+  .sf-placeholder { display: inline-flex; width: 2.5rem; height: 2.5rem; color: var(--mb-gold); opacity: .75; }
+  .sf-placeholder svg { width: 100%; height: 100%; display: block; }
   .sf-card-body { padding: .9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: .3rem; flex: 1; }
   .sf-card-cat {
     font-size: .68rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
@@ -130,7 +139,9 @@
   .sf-see {
     font-size: .78rem; font-weight: 600; color: var(--mb-muted); white-space: nowrap;
   }
+  .sf-arrow { width: .85rem; height: .85rem; vertical-align: -.15rem; transition: transform .15s ease; }
   .sf-card:hover .sf-see { color: var(--mb-brand); }
+  .sf-card:hover .sf-arrow { transform: translateX(2px); }
 
   /* Empty state */
   .sf-empty {
@@ -144,12 +155,20 @@
   }
 
   @media (prefers-reduced-motion: reduce) { .sf-card { transition: none; } }
+  @media (max-width: 480px) {
+    .sf-topbar { padding: .85rem 1rem; }
+    .sf-brand { font-size: 1.15rem; }
+    .sf-header-actions { gap: .45rem; }
+    .sf-admin { padding: .3rem .55rem; font-size: .7rem; }
+    .sf-lang { gap: .2rem; }
+    .sf-lang a { padding: .28rem .45rem; }
+  }
 </style>
 </head>
 <body>
 
 <div class="sf-topbar">
-  <a class="sf-brand" href="{{ url_for('showroom') }}">🏪 MyBoutiq</a>
+  <a class="sf-brand" href="{{ url_for('showroom') }}"><span class="sf-brand-mark" aria-hidden="true">MB</span>MyBoutiq</a>
   {% set cat_qs = ('category=' ~ category ~ '&') if category else '' %}
   <div class="sf-header-actions">
     <a class="sf-admin" href="{{ url_for('dashboard') if logged_in else url_for('login', next=url_for('dashboard')) }}">
@@ -203,7 +222,12 @@
       {% if p.image_url %}
         <img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy">
       {% else %}
-        <span class="sf-placeholder">📦</span>
+        <span class="sf-placeholder" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3.5 7 8.5-4 8.5 4v10l-8.5 4-8.5-4V7Z"/>
+            <path d="m3.5 7 8.5 4 8.5-4M12 11v10"/>
+          </svg>
+        </span>
       {% endif %}
     </div>
     <div class="sf-card-body">
@@ -212,7 +236,11 @@
       {% if p.description %}<p class="sf-card-desc">{{ p.description|truncate(80) }}</p>{% endif %}
       <div class="sf-card-foot">
         <span class="sf-price">{{ p.sale_price|eur }}</span>
-        <span class="sf-see">{{ 'See piece →' if lang == 'en' else 'Voir la pièce →' }}</span>
+        <span class="sf-see">{{ 'See piece' if lang == 'en' else 'Voir la pièce' }}
+          <svg class="sf-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2.5 8h10M8.5 4l4 4-4 4"/>
+          </svg>
+        </span>
       </div>
     </div>
   </a>
