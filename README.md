@@ -1,7 +1,7 @@
 # MyBoutiq
 FR : [FR README.md](https://github.com/AntiDoteMA/MyBoutiq/blob/main/FR_README.md).
 
-A shop-management web app with a showroom-style front store for products, alongside inventory, sales, expenses, exports, and a secure sign-in. It is designed to support smooth product sharing across social platforms like Facebook, Instagram, and other networks, and it may later include payment management features for in-store and online customer payments.
+MyBoutiq is a retail management web application that combines inventory control, sales, expenses, exports, and secure authentication with a showroom-style front store for product presentation. It is designed to support efficient product publishing across Facebook, Instagram, and other social networks, with future support planned for in-store and online payment management.
 
 It replaces the legacy Excel spreadsheet and runs either **locally** (double-click `run.bat`, zero setup) or **online** (free hosting on PythonAnywhere, photos served from the ImageKit CDN).
 
@@ -30,8 +30,8 @@ No configuration needed: Python 3.11 is enough. On first launch the database is 
 
 - **Dashboard**: sales, profit, expenses (products + operating costs), stock, discounts given; charts (30-day sales, monthly sales/expenses/profit, top sellers, stock by status); low-stock / out-of-stock alerts.
 - **Products**: photo (jpg/png/webp ≤ 5 MB), **post-ready description** (emojis and line breaks kept, **📋 Copy** button for Facebook), category (suggestions), search / filters / sorting, restocking, **soft delete** (sales history is kept). Stock is **always derived** (bought − sold + refunded).
-- **Front store / showroom**: a product showcase designed for customers and social sharing.
-- **Social sharing**: streamlined posting workflow for Facebook, Instagram, and other social networks.
+- **Front store / showroom**: a polished product showcase for customer-facing browsing and social sharing.
+- **Social sharing**: streamlined publishing workflow for Facebook, Instagram, and other social platforms.
 - **Payments management**: planned support for in-store and online payment handling.
 - **Sales**: list price shown, **editable charged price (discount)** with a live “Discount € / %” badge, blocked if quantity > stock, **refund/void** (restores stock and removes the sale from totals).
 - **Expenses**: a simple ledger (date, description, amount) for operating costs — never mixed up with products.
