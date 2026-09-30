@@ -1,5 +1,8 @@
-# MyBoutiq
+# MyBoutiq - V1
+
 FR : [FR README.md](https://github.com/AntiDoteMA/MyBoutiq/blob/main/FR_README.md).
+
+V2 at [AntiDoteMA/MyBoutiq-Sirin](https://github.com/AntiDoteMA/MyBoutiq-Sirin). currently private...
 
 MyBoutiq is a modern retail management web application that combines inventory control, sales, expenses, exports, and secure authentication with a showroom-style front store for product presentation. It is built to support future expansion into social media publishing workflows and payment management capabilities, including planned integration for Facebook, Instagram, other social networks, and in-store or online payments.
 
